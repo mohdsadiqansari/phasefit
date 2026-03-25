@@ -1,0 +1,1989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PHASE FIT — Sadik's Muscle Builder</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg2: #111111;
+    --bg3: #1a1a1a;
+    --bg4: #222222;
+    --accent: #f97316;
+    --accent2: #fb923c;
+    --gold: #fbbf24;
+    --green: #22c55e;
+    --red: #ef4444;
+    --blue: #3b82f6;
+    --text: #f5f5f5;
+    --text2: #a3a3a3;
+    --text3: #525252;
+    --border: #2a2a2a;
+    --card: #141414;
+    --shadow: 0 0 40px rgba(249,115,22,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* GRAIN OVERLAY */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999; opacity: 0.4;
+  }
+
+  /* HEADER */
+  .header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,10,0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 3px;
+    color: var(--accent);
+  }
+
+  .logo span { color: var(--text); }
+
+  .header-right {
+    display: flex; align-items: center; gap: 16px;
+  }
+
+  .badge {
+    background: rgba(249,115,22,0.12);
+    border: 1px solid rgba(249,115,22,0.3);
+    color: var(--accent);
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .date-display {
+    color: var(--text2);
+    font-size: 13px;
+  }
+
+  /* NAV */
+  .nav {
+    display: flex;
+    gap: 2px;
+    padding: 12px 24px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+
+  .nav-btn {
+    background: none; border: none;
+    color: var(--text3);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  .nav-btn:hover { color: var(--text2); background: var(--bg3); }
+  .nav-btn.active {
+    color: var(--accent);
+    background: rgba(249,115,22,0.1);
+    border: 1px solid rgba(249,115,22,0.2);
+  }
+
+  /* PAGES */
+  .page { display: none; padding: 24px; max-width: 1100px; margin: 0 auto; }
+  .page.active { display: block; }
+
+  /* SECTIONS */
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+    line-height: 1;
+  }
+
+  .section-sub {
+    color: var(--text2);
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+  }
+
+  .card-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 8px;
+  }
+
+  /* GRID */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+
+  @media (max-width: 768px) {
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr 1fr; }
+    .span-2 { grid-column: 1 / -1; }
+  }
+
+  @media (max-width: 480px) {
+    .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  }
+
+  /* STAT CARDS */
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+
+  .stat-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .stat-icon {
+    position: absolute; right: 20px; top: 20px;
+    font-size: 28px; opacity: 0.2;
+  }
+
+  /* TODAY WORKOUT CARD */
+  .today-card {
+    background: linear-gradient(135deg, #1a0e00 0%, #0f0f0f 60%);
+    border: 1px solid rgba(249,115,22,0.3);
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .today-card::after {
+    content: '';
+    position: absolute; right: -40px; top: -40px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(249,115,22,0.1) 0%, transparent 70%);
+  }
+
+  /* WEEKLY SCHEDULE */
+  .week-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: 768px) {
+    .week-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  .day-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .day-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+  .day-card.active {
+    background: rgba(249,115,22,0.08);
+    border-color: var(--accent);
+  }
+
+  .day-card.rest { opacity: 0.5; }
+  .day-card.today { border-color: var(--gold); }
+
+  .day-card.today::after {
+    content: '•';
+    position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
+    color: var(--gold); font-size: 16px;
+  }
+
+  .day-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 6px;
+  }
+
+  .day-muscle {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .day-card.active .day-muscle { color: var(--accent); }
+
+  /* WORKOUT DETAIL */
+  .workout-detail {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .workout-header {
+    background: linear-gradient(90deg, rgba(249,115,22,0.1), transparent);
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 16px;
+  }
+
+  .workout-day-badge {
+    background: var(--accent);
+    color: #000;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 2px;
+    width: 56px; height: 56px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .exercise-list { padding: 0; }
+
+  .exercise-item {
+    display: flex;
+    align-items: center;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .exercise-item:hover { background: rgba(255,255,255,0.02); }
+  .exercise-item:last-child { border-bottom: none; }
+
+  .ex-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--text3);
+    width: 24px;
+    flex-shrink: 0;
+  }
+
+  .ex-icon {
+    width: 40px; height: 40px;
+    background: var(--bg3);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .ex-info { flex: 1; }
+
+  .ex-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+  }
+
+  .ex-detail {
+    font-size: 12px;
+    color: var(--text2);
+  }
+
+  .ex-sets {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .set-pill {
+    background: rgba(249,115,22,0.1);
+    border: 1px solid rgba(249,115,22,0.2);
+    color: var(--accent);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 100px;
+  }
+
+  .set-pill.green {
+    background: rgba(34,197,94,0.1);
+    border-color: rgba(34,197,94,0.2);
+    color: var(--green);
+  }
+
+  /* DONE TOGGLE */
+  .done-toggle {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    border: 2px solid var(--border);
+    background: none;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .done-toggle.checked {
+    background: var(--green);
+    border-color: var(--green);
+  }
+
+  /* DIET PAGE */
+  .macro-bar-wrap {
+    margin-bottom: 16px;
+  }
+
+  .macro-header {
+    display: flex; justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+
+  .macro-bar {
+    height: 8px;
+    background: var(--bg3);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+
+  .macro-fill {
+    height: 100%;
+    border-radius: 100px;
+    transition: width 0.5s;
+  }
+
+  .meal-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+
+  .meal-header {
+    padding: 16px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .meal-header:hover { background: rgba(255,255,255,0.02); }
+
+  .meal-time-badge {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--text3);
+    background: var(--bg3);
+    padding: 3px 10px;
+    border-radius: 6px;
+  }
+
+  .meal-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    margin-top: 2px;
+  }
+
+  .meal-kcal {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: var(--accent);
+  }
+
+  .meal-body {
+    display: none;
+    padding: 0 20px 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .meal-body.open { display: block; }
+
+  .food-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 14px;
+  }
+
+  .food-row:last-child { border-bottom: none; }
+
+  .food-macros {
+    display: flex; gap: 12px;
+    font-size: 12px;
+    color: var(--text2);
+  }
+
+  .food-macros span { white-space: nowrap; }
+
+  /* PROGRESS PAGE */
+  .progress-form {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 480px) {
+    .progress-form { grid-template-columns: 1fr; }
+  }
+
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+
+  .form-label {
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text3);
+    font-weight: 600;
+  }
+
+  .form-input {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .form-input:focus { border-color: var(--accent); }
+
+  .btn {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 24px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+
+  .btn:hover { background: var(--accent2); transform: translateY(-1px); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text2);
+    border: 1px solid var(--border);
+  }
+
+  .btn-ghost:hover { background: var(--bg3); color: var(--text); }
+
+  .btn-danger {
+    background: rgba(239,68,68,0.1);
+    color: var(--red);
+    border: 1px solid rgba(239,68,68,0.2);
+  }
+
+  .btn-danger:hover { background: rgba(239,68,68,0.2); }
+
+  /* LOG TABLE */
+  .log-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .log-table th {
+    text-align: left;
+    padding: 10px 12px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text3);
+    border-bottom: 1px solid var(--border);
+    font-weight: 600;
+  }
+
+  .log-table td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .log-table tr:last-child td { border-bottom: none; }
+
+  .log-table .pos { color: var(--green); }
+  .log-table .neg { color: var(--red); }
+
+  /* TIMER PAGE */
+  .timer-display {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 120px;
+    color: var(--accent);
+    text-align: center;
+    line-height: 1;
+    letter-spacing: 4px;
+    text-shadow: 0 0 60px rgba(249,115,22,0.3);
+  }
+
+  .timer-ring-wrap {
+    display: flex; justify-content: center;
+    margin: 24px 0;
+    position: relative;
+  }
+
+  .timer-ring-wrap svg {
+    transform: rotate(-90deg);
+  }
+
+  .timer-center {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  .timer-secs {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .timer-label-small {
+    font-size: 12px;
+    color: var(--text3);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .timer-presets {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 8px; margin-bottom: 20px;
+  }
+
+  .preset-btn {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px;
+    color: var(--text2);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .preset-btn:hover, .preset-btn.selected {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(249,115,22,0.08);
+  }
+
+  .timer-controls {
+    display: flex; gap: 12px; justify-content: center;
+  }
+
+  /* TIPS PAGE */
+  .tip-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 12px;
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+
+  .tip-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .tip-icon.orange { background: rgba(249,115,22,0.1); }
+  .tip-icon.green { background: rgba(34,197,94,0.1); }
+  .tip-icon.blue { background: rgba(59,130,246,0.1); }
+  .tip-icon.gold { background: rgba(251,191,36,0.1); }
+
+  .tip-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .tip-text { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+  /* HERO STRIP */
+  .hero-strip {
+    background: linear-gradient(90deg, rgba(249,115,22,0.08) 0%, transparent 100%);
+    border: 1px solid rgba(249,115,22,0.15);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .hero-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 2px;
+    line-height: 1.2;
+  }
+
+  .hero-text span { color: var(--accent); }
+
+  /* PROGRESS CHART */
+  .chart-canvas-wrap {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  canvas { max-width: 100%; }
+
+  /* SEPARATOR */
+  .sep {
+    height: 1px;
+    background: var(--border);
+    margin: 24px 0;
+  }
+
+  /* TAGS */
+  .tag {
+    display: inline-block;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-size: 11px;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .tag.orange { background: rgba(249,115,22,0.08); border-color: rgba(249,115,22,0.2); color: var(--accent); }
+  .tag.green { background: rgba(34,197,94,0.08); border-color: rgba(34,197,94,0.2); color: var(--green); }
+
+  /* ANIMATE */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .page.active > * {
+    animation: fadeUp 0.35s ease forwards;
+  }
+
+  .page.active > *:nth-child(2) { animation-delay: 0.04s; }
+  .page.active > *:nth-child(3) { animation-delay: 0.08s; }
+  .page.active > *:nth-child(4) { animation-delay: 0.12s; }
+  .page.active > *:nth-child(5) { animation-delay: 0.16s; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  /* NOTIFICATION */
+  .notif {
+    position: fixed; bottom: 24px; right: 24px;
+    background: var(--green);
+    color: #000;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    z-index: 9998;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s;
+  }
+
+  .notif.show { transform: translateY(0); opacity: 1; }
+
+  /* EXERCISE MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(8px);
+    z-index: 200;
+    display: none; align-items: center; justify-content: center;
+    padding: 16px;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+    max-width: 480px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    animation: fadeUp 0.25s ease;
+  }
+
+  .modal-close {
+    position: absolute; top: 16px; right: 16px;
+    background: var(--bg3); border: none;
+    color: var(--text2);
+    width: 32px; height: 32px;
+    border-radius: 8px; cursor: pointer;
+    font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* QUOTE */
+  .quote-strip {
+    background: var(--bg3);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--text2);
+    font-style: italic;
+    margin-bottom: 24px;
+  }
+
+  .quote-strip strong { color: var(--text); }
+
+  /* RESPONSIVE FIX */
+  @media (max-width: 600px) {
+    .page { padding: 16px; }
+    .header { padding: 0 16px; }
+    .nav { padding: 8px 16px; }
+    .timer-secs { font-size: 48px; }
+    .hero-text { font-size: 22px; }
+    .section-title { font-size: 28px; }
+  }
+
+  /* BMI GAUGE */
+  .bmi-wrap {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 8px;
+  }
+
+  .bmi-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .bmi-label { font-size: 12px; color: var(--text2); }
+
+  /* STREAK */
+  .streak-dots {
+    display: flex; gap: 6px; flex-wrap: wrap;
+    margin-top: 12px;
+  }
+
+  .streak-dot {
+    width: 20px; height: 20px;
+    border-radius: 6px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .streak-dot.hit { background: var(--accent); border-color: var(--accent); }
+  .streak-dot.rest-day { background: rgba(59,130,246,0.2); border-color: rgba(59,130,246,0.3); }
+
+  .inline-flex { display: flex; align-items: center; gap: 8px; }
+  .mt-4 { margin-top: 16px; }
+  .mt-2 { margin-top: 8px; }
+  .mb-4 { margin-bottom: 16px; }
+  .text-sm { font-size: 13px; }
+  .text-xs { font-size: 11px; letter-spacing: 0.5px; }
+  .text-accent { color: var(--accent); }
+  .text-muted { color: var(--text2); }
+  .text-green { color: var(--green); }
+  .bold { font-weight: 700; }
+  .fw-cond { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="logo">PHASE<span>FIT</span></div>
+  <div class="header-right">
+    <div class="badge">🕌 Halal</div>
+    <div class="date-display" id="headerDate"></div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="nav">
+  <button class="nav-btn active" onclick="showPage('dashboard', this)">🏠 Dashboard</button>
+  <button class="nav-btn" onclick="showPage('workout', this)">💪 Workout</button>
+  <button class="nav-btn" onclick="showPage('diet', this)">🥩 Diet Plan</button>
+  <button class="nav-btn" onclick="showPage('progress', this)">📈 Progress</button>
+  <button class="nav-btn" onclick="showPage('timer', this)">⏱ Timer</button>
+  <button class="nav-btn" onclick="showPage('tips', this)">💡 Tips</button>
+</nav>
+
+<!-- ==================== DASHBOARD ==================== -->
+<div id="page-dashboard" class="page active">
+
+  <div class="hero-strip">
+    <div>
+      <div class="hero-text">ASSALAMU ALAIKUM, <span>SADIK</span> 🤲</div>
+      <div class="text-sm text-muted mt-2">170cm · <span id="dashWeight">52</span>kg · BMI <span id="dashBMI">18.0</span> · Goal: 65kg Lean Muscle</div>
+    </div>
+    <div style="font-size:40px;">🔥</div>
+  </div>
+
+  <div class="grid-4 mb-4">
+    <div class="stat-card">
+      <div class="card-title">Current Weight</div>
+      <div class="stat-number" id="statWeight">52</div>
+      <div class="stat-label">kg</div>
+      <div class="stat-icon">⚖️</div>
+    </div>
+    <div class="stat-card">
+      <div class="card-title">Target Weight</div>
+      <div class="stat-number" style="color:var(--green)">65</div>
+      <div class="stat-label">kg</div>
+      <div class="stat-icon">🎯</div>
+    </div>
+    <div class="stat-card">
+      <div class="card-title">To Gain</div>
+      <div class="stat-number" style="color:var(--gold)" id="statToGain">13</div>
+      <div class="stat-label">kg</div>
+      <div class="stat-icon">📊</div>
+    </div>
+    <div class="stat-card">
+      <div class="card-title">Workout Streak</div>
+      <div class="stat-number" style="color:var(--blue)" id="statStreak">0</div>
+      <div class="stat-label">days</div>
+      <div class="stat-icon">🔥</div>
+    </div>
+  </div>
+
+  <!-- TODAY -->
+  <div class="today-card mb-4">
+    <div class="card-title">TODAY'S FOCUS</div>
+    <div id="todayFocus" style="font-family:'Bebas Neue';font-size:32px;margin-bottom:8px;"></div>
+    <div id="todayDesc" style="font-size:14px;color:var(--text2);margin-bottom:16px;"></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn" onclick="showPage('workout', document.querySelector('.nav-btn:nth-child(2)'));document.querySelector('.nav-btn:nth-child(2)').click()">Start Workout →</button>
+      <button class="btn btn-ghost" onclick="showPage('timer', document.querySelector('.nav-btn:nth-child(5)'));document.querySelector('.nav-btn:nth-child(5)').click()">⏱ Rest Timer</button>
+    </div>
+  </div>
+
+  <!-- CALORIES -->
+  <div class="grid-2 mb-4">
+    <div class="card">
+      <div class="card-title">Daily Calorie Target</div>
+      <div style="font-family:'Bebas Neue';font-size:40px;color:var(--accent)">2700 <span style="font-size:18px;color:var(--text2)">kcal</span></div>
+      <div class="sep" style="margin:12px 0;"></div>
+      <div class="macro-bar-wrap">
+        <div class="macro-header"><span>Protein</span><span class="text-accent">135g</span></div>
+        <div class="macro-bar"><div class="macro-fill" style="width:50%;background:var(--blue)"></div></div>
+      </div>
+      <div class="macro-bar-wrap">
+        <div class="macro-header"><span>Carbs</span><span style="color:var(--gold)">338g</span></div>
+        <div class="macro-bar"><div class="macro-fill" style="width:50%;background:var(--gold)"></div></div>
+      </div>
+      <div class="macro-bar-wrap">
+        <div class="macro-header"><span>Fat</span><span style="color:var(--green)">75g</span></div>
+        <div class="macro-bar"><div class="macro-fill" style="width:25%;background:var(--green)"></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">30-Day Streak Calendar</div>
+      <div class="streak-dots" id="streakDots"></div>
+      <div class="mt-4" style="display:flex;gap:12px;font-size:12px;color:var(--text2);">
+        <span>🟠 Workout</span>
+        <span>🔵 Rest</span>
+        <span>⬛ Upcoming</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK TIPS -->
+  <div class="card">
+    <div class="card-title">Quick Reminders</div>
+    <div class="mt-2" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div style="background:var(--bg3);border-radius:10px;padding:10px 12px;font-size:13px;">🕌 <strong>Fajr</strong> — Quran + Light Stretch</div>
+      <div style="background:var(--bg3);border-radius:10px;padding:10px 12px;font-size:13px;">💧 <strong>Hydration</strong> — 3L water daily</div>
+      <div style="background:var(--bg3);border-radius:10px;padding:10px 12px;font-size:13px;">😴 <strong>Sleep</strong> — 8hrs minimum</div>
+      <div style="background:var(--bg3);border-radius:10px;padding:10px 12px;font-size:13px;">🥚 <strong>Protein</strong> — 4 eggs every morning</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== WORKOUT ==================== -->
+<div id="page-workout" class="page">
+
+  <div class="section-title">WORKOUT PLAN</div>
+  <div class="section-sub">5-Day Split · Dumbbells + Barbell + EZ Bar · Home</div>
+
+  <div class="week-grid" id="weekGrid"></div>
+
+  <div id="workoutDetail"></div>
+</div>
+
+<!-- ==================== DIET ==================== -->
+<div id="page-diet" class="page">
+
+  <div class="section-title">HALAL DIET PLAN</div>
+  <div class="section-sub">2700 kcal · 135g Protein · Budget-Friendly · No Supplements</div>
+
+  <div class="quote-strip">
+    <strong>Barkat ka rizq:</strong> Eggs, Chicken, Dal, Soya, Milk — sab halal, sab sasta. Allah ne diya, use istemal karo. 🤲
+  </div>
+
+  <div class="grid-4 mb-4">
+    <div class="stat-card" style="border-top-color:var(--blue)">
+      <div class="card-title">Protein</div>
+      <div class="stat-number" style="color:var(--blue)">135g</div>
+      <div class="stat-label">per day</div>
+    </div>
+    <div class="stat-card" style="border-top-color:var(--gold)">
+      <div class="card-title">Carbs</div>
+      <div class="stat-number" style="color:var(--gold)">338g</div>
+      <div class="stat-label">per day</div>
+    </div>
+    <div class="stat-card" style="border-top-color:var(--green)">
+      <div class="card-title">Fat</div>
+      <div class="stat-number" style="color:var(--green)">75g</div>
+      <div class="stat-label">per day</div>
+    </div>
+    <div class="stat-card">
+      <div class="card-title">Total</div>
+      <div class="stat-number">2700</div>
+      <div class="stat-label">kcal</div>
+    </div>
+  </div>
+
+  <div id="mealsContainer"></div>
+
+  <div class="card mt-4">
+    <div class="card-title">💰 Budget Grocery List (Weekly — ₹600-800)</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;">
+      <div class="food-row"><span>🥚 Eggs (30pcs)</span><span class="text-muted">~₹200</span></div>
+      <div class="food-row"><span>🍗 Chicken (1kg)</span><span class="text-muted">~₹180</span></div>
+      <div class="food-row"><span>🫘 Soya Chunks (1kg)</span><span class="text-muted">~₹80</span></div>
+      <div class="food-row"><span>🥛 Milk (7 packets)</span><span class="text-muted">~₹140</span></div>
+      <div class="food-row"><span>🍚 Rice (1kg)</span><span class="text-muted">~₹50</span></div>
+      <div class="food-row"><span>🫘 Dal/Lentils (500g)</span><span class="text-muted">~₹60</span></div>
+      <div class="food-row"><span>🍌 Bananas (1 dozen)</span><span class="text-muted">~₹40</span></div>
+      <div class="food-row"><span>🥜 Peanuts/Groundnut</span><span class="text-muted">~₹60</span></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== PROGRESS ==================== -->
+<div id="page-progress" class="page">
+
+  <div class="section-title">PROGRESS LOG</div>
+  <div class="section-sub">Track your transformation weekly</div>
+
+  <div class="grid-2 mb-4">
+    <div class="card">
+      <div class="card-title">Log Today's Stats</div>
+      <div class="progress-form mt-2">
+        <div class="form-group">
+          <label class="form-label">Weight (kg)</label>
+          <input type="number" class="form-input" id="inp-weight" placeholder="52" step="0.1">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Chest (cm)</label>
+          <input type="number" class="form-input" id="inp-chest" placeholder="86">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Bicep (cm)</label>
+          <input type="number" class="form-input" id="inp-bicep" placeholder="28">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Shoulder (cm)</label>
+          <input type="number" class="form-input" id="inp-shoulder" placeholder="96">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Waist (cm)</label>
+          <input type="number" class="form-input" id="inp-waist" placeholder="70">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Workout Done?</label>
+          <select class="form-input" id="inp-workout">
+            <option value="yes">✅ Yes</option>
+            <option value="rest">😴 Rest Day</option>
+            <option value="no">❌ No</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn" onclick="logProgress()">💾 Save Log</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Progress Overview</div>
+      <div id="progressStats" style="margin-top:12px;"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="margin-bottom:16px;">📊 Weight History</div>
+    <canvas id="weightChart" height="160"></canvas>
+  </div>
+
+  <div class="card mt-4">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <div class="card-title">Log History</div>
+      <button class="btn btn-danger" onclick="clearLogs()" style="font-size:12px;padding:6px 14px;">🗑 Clear All</button>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="log-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Weight</th>
+            <th>Chest</th>
+            <th>Bicep</th>
+            <th>Shoulder</th>
+            <th>Waist</th>
+            <th>Change</th>
+            <th>Workout</th>
+          </tr>
+        </thead>
+        <tbody id="logTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== TIMER ==================== -->
+<div id="page-timer" class="page">
+
+  <div class="section-title">REST TIMER</div>
+  <div class="section-sub">Optimal rest between sets for muscle growth</div>
+
+  <div class="card mb-4">
+    <div class="card-title">Choose Rest Duration</div>
+    <div class="timer-presets mt-2">
+      <button class="preset-btn" onclick="setTimer(30)">30s<br><span style="font-size:10px;color:var(--text3)">Abs</span></button>
+      <button class="preset-btn selected" onclick="setTimer(60)">60s<br><span style="font-size:10px;color:var(--text3)">Arms</span></button>
+      <button class="preset-btn" onclick="setTimer(90)">90s<br><span style="font-size:10px;color:var(--text3)">General</span></button>
+      <button class="preset-btn" onclick="setTimer(120)">2min<br><span style="font-size:10px;color:var(--text3)">Compound</span></button>
+    </div>
+
+    <div class="timer-ring-wrap">
+      <svg width="220" height="220" viewBox="0 0 220 220">
+        <circle cx="110" cy="110" r="95" fill="none" stroke="var(--bg3)" stroke-width="12"/>
+        <circle cx="110" cy="110" r="95" fill="none" stroke="var(--accent)" stroke-width="12"
+          stroke-dasharray="596.9" id="timerArc" stroke-dashoffset="0"
+          stroke-linecap="round" style="transition:stroke-dashoffset 0.1s linear"/>
+      </svg>
+      <div class="timer-center">
+        <div class="timer-secs" id="timerDisplay">60</div>
+        <div class="timer-label-small">seconds</div>
+      </div>
+    </div>
+
+    <div class="timer-controls">
+      <button class="btn btn-ghost" onclick="resetTimer()">↺ Reset</button>
+      <button class="btn" id="timerBtn" onclick="toggleTimer()">▶ Start</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Rest Time Guidelines</div>
+    <div style="margin-top:12px;">
+      <div class="food-row">
+        <span>🏋️ Compound (Barbell Press, Rows)</span>
+        <span class="tag orange">90–120s</span>
+      </div>
+      <div class="food-row">
+        <span>💪 Isolation (Curls, Flyes)</span>
+        <span class="tag orange">60–90s</span>
+      </div>
+      <div class="food-row">
+        <span>🦵 Legs (Squats, Lunges)</span>
+        <span class="tag orange">90s</span>
+      </div>
+      <div class="food-row">
+        <span>🔲 Abs/Core</span>
+        <span class="tag" style="color:var(--text2)">30–45s</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== TIPS ==================== -->
+<div id="page-tips" class="page">
+
+  <div class="section-title">PRO TIPS</div>
+  <div class="section-sub">Science-backed + Islamic approach to fitness</div>
+
+  <div id="tipsContainer"></div>
+</div>
+
+<!-- NOTIFICATION -->
+<div class="notif" id="notif"></div>
+
+<!-- EXERCISE MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+
+const DAYS = [
+  {
+    day: 'MON', muscle: 'Chest + Triceps', emoji: '🏋️', color: 'var(--accent)',
+    type: 'push',
+    warmup: '5 min jumping jacks + 10 arm circles',
+    exercises: [
+      { name: 'Barbell Floor Press', sets: '4', reps: '8-10', rest: '90s', equipment: 'Barbell', icon: '🏋️', note: 'Lie on floor, press straight up. Full chest activation. Squeeze top!', muscle: 'Chest (primary), Triceps', tip: 'If you don\'t have a bench, floor press is actually great for chest. Keep elbows at 45° not 90°.' },
+      { name: 'Dumbbell Chest Flyes (Floor)', sets: '3', reps: '12-15', rest: '60s', equipment: 'Dumbbells', icon: '🦋', note: 'Arms wide, slight bend in elbows, squeeze chest at top.', muscle: 'Chest (stretch)', tip: 'Go slow on the way down — this stretch builds chest width.' },
+      { name: 'Close-Grip DB Press', sets: '3', reps: '10-12', rest: '60s', equipment: 'Dumbbells', icon: '💪', note: 'Hold dumbbells close together, squeeze inward while pressing.', muscle: 'Inner Chest + Triceps', tip: 'Imagine you\'re squeezing an orange between your palms.' },
+      { name: 'EZ Bar Skull Crushers', sets: '3', reps: '10-12', rest: '60s', equipment: 'EZ Bar', icon: '💀', note: 'Lying down, lower bar to forehead, extend arms.', muscle: 'Triceps Long Head', tip: 'Keep upper arms locked — only forearms move.' },
+      { name: 'Dumbbell Tricep Kickbacks', sets: '3', reps: '12-15', rest: '45s', equipment: 'Dumbbells', icon: '🔁', note: 'Lean forward, upper arm parallel to floor, extend back.', muscle: 'Triceps', tip: 'Full extension + squeeze = feel the burn.' },
+    ]
+  },
+  {
+    day: 'TUE', muscle: 'Back + Biceps', emoji: '🔙', color: 'var(--blue)',
+    type: 'pull',
+    warmup: '5 min light rows + 10 shoulder rolls',
+    exercises: [
+      { name: 'Barbell Bent-Over Row', sets: '4', reps: '8-10', rest: '90s', equipment: 'Barbell', icon: '🔃', note: 'Hinge at hip 45°, pull bar to belly button, squeeze shoulder blades.', muscle: 'Back (primary)', tip: 'This is YOUR most important back exercise. Master it — it builds thickness.' },
+      { name: 'Dumbbell One-Arm Row', sets: '3', reps: '10-12 each', rest: '60s', equipment: 'Dumbbells', icon: '💪', note: 'Support on table, pull DB to hip, elbow drives back.', muscle: 'Lats, Mid-Back', tip: 'Pull your elbow behind your body — not just up.' },
+      { name: 'EZ Bar Curl', sets: '4', reps: '10-12', rest: '60s', equipment: 'EZ Bar', icon: '💪', note: 'Grip angled grips, curl up slowly, squeeze top.', muscle: 'Biceps Peak', tip: 'Don\'t swing! Strict form = better bicep response.' },
+      { name: 'Dumbbell Hammer Curl', sets: '3', reps: '12 each', rest: '45s', equipment: 'Dumbbells', icon: '🔨', note: 'Neutral grip (thumbs up), curl to shoulder.', muscle: 'Biceps + Brachialis + Forearms', tip: 'This builds arm thickness and killer forearms.' },
+      { name: 'DB Reverse Curl (Forearms)', sets: '3', reps: '12-15', rest: '45s', equipment: 'Dumbbells', icon: '🔄', note: 'Overhand grip, curl up — wrists face down throughout.', muscle: 'Forearms + Brachioradialis', tip: 'Slow negatives = massive forearm gains.' },
+    ]
+  },
+  {
+    day: 'WED', muscle: 'Shoulders + Forearms', emoji: '🪩', color: 'var(--gold)',
+    type: 'shoulders',
+    warmup: '5 min rotator cuff warm up + band pulls',
+    exercises: [
+      { name: 'Seated DB Overhead Press', sets: '4', reps: '10-12', rest: '90s', equipment: 'Dumbbells', icon: '⬆️', note: 'Sit straight, press overhead fully, lower to ear level.', muscle: 'Front + Side Delts', tip: 'Don\'t flare elbows out too much — 70° angle is perfect.' },
+      { name: 'DB Lateral Raise', sets: '4', reps: '15-20', rest: '45s', equipment: 'Dumbbells', icon: '🦅', note: 'Slight forward lean, raise arms to shoulder height, slight bend in elbows.', muscle: 'Side Delts (shoulder width)', tip: 'Lateral raises build the wide shoulder look. Use LIGHT weight with perfect form.' },
+      { name: 'DB Front Raise', sets: '3', reps: '12-15', rest: '45s', equipment: 'Dumbbells', icon: '⬆️', note: 'Raise one arm at a time to eye level.', muscle: 'Front Delts', tip: 'Alternate arms or do both together.' },
+      { name: 'Barbell Upright Row', sets: '3', reps: '10-12', rest: '60s', equipment: 'Barbell', icon: '📡', note: 'Pull bar up to chin, elbows high.', muscle: 'Side Delts + Traps', tip: 'Use a wide grip to protect shoulders.' },
+      { name: 'Wrist Curls (Forearms)', sets: '3', reps: '20-25', rest: '30s', equipment: 'Dumbbells', icon: '✊', note: 'Rest forearm on thigh, curl wrist up and down.', muscle: 'Forearm Flexors', tip: 'Do wrist extensions too — flip hands over.' },
+      { name: 'Farmer\'s Hold (Static)', sets: '3', reps: '45 sec hold', rest: '45s', equipment: 'Dumbbells', icon: '🧱', note: 'Hold heaviest DBs at sides as long as possible.', muscle: 'Grip + Full Forearm', tip: 'This builds insane forearm size and grip strength.' },
+    ]
+  },
+  {
+    day: 'THU', muscle: 'REST + Stretch', emoji: '😴', color: 'var(--green)',
+    type: 'rest',
+    warmup: 'Full body 10-min stretch',
+    exercises: [
+      { name: 'Full Body Stretch', sets: '1', reps: '10 min', rest: '-', equipment: 'None', icon: '🧘', note: 'Stretch all major muscles. Chest doorway stretch, hip flexors, shoulders.', muscle: 'Recovery', tip: 'Rest days are when muscles GROW. Eat well and sleep 8 hours.' },
+      { name: 'Light Walk', sets: '1', reps: '20-30 min', rest: '-', equipment: 'None', icon: '🚶', note: 'Easy pace, fresh air, active recovery.', muscle: 'Blood flow', tip: 'Walking improves nutrient delivery to muscles.' },
+    ]
+  },
+  {
+    day: 'FRI', muscle: 'Legs', emoji: '🦵', color: 'var(--red)',
+    type: 'legs',
+    warmup: '5 min jumping jacks + bodyweight squats',
+    exercises: [
+      { name: 'Barbell Squat (Goblet Style)', sets: '4', reps: '10-12', rest: '90s', equipment: 'Barbell', icon: '🏋️', note: 'Hold barbell at chest, squat to parallel, drive through heels.', muscle: 'Quads, Glutes, Hamstrings', tip: 'Since you have no squat rack, hold at chest or do split squats with dumbbells.' },
+      { name: 'DB Reverse Lunge', sets: '3', reps: '10 each leg', rest: '60s', equipment: 'Dumbbells', icon: '🚶', note: 'Step back, lower knee near floor, push front heel to stand.', muscle: 'Quads + Glutes', tip: 'Reverse lunges are easier on knees than forward lunges.' },
+      { name: 'DB Romanian Deadlift', sets: '4', reps: '10-12', rest: '90s', equipment: 'Dumbbells', icon: '🔽', note: 'Soft knees, push hips back, DBs trail down legs, feel hamstring stretch.', muscle: 'Hamstrings + Glutes', tip: 'Go slow on the way down — you\'ll feel it in your hamstrings.' },
+      { name: 'DB Calf Raise', sets: '3', reps: '20-25', rest: '30s', equipment: 'Dumbbells', icon: '🦵', note: 'Stand on edge of step, full range of motion.', muscle: 'Calves', tip: '3 second hold at top = better calf development.' },
+    ]
+  },
+  {
+    day: 'SAT', muscle: 'Arms + Abs', emoji: '💪', color: 'var(--accent)',
+    type: 'arms',
+    warmup: '5 min light cardio + arm circles',
+    exercises: [
+      { name: 'Barbell Curl', sets: '4', reps: '8-10', rest: '60s', equipment: 'Barbell', icon: '💪', note: 'Classic straight bar, full ROM, no swinging.', muscle: 'Biceps Full', tip: 'Pinch your elbows to your side. They should not move.' },
+      { name: 'DB Concentration Curl', sets: '3', reps: '12 each', rest: '45s', equipment: 'Dumbbells', icon: '🎯', note: 'Seat on edge, elbow braced on thigh, slow curl.', muscle: 'Biceps Peak', tip: 'Best exercise for the bicep PEAK. Go slow!' },
+      { name: 'EZ Bar Close-Grip Press', sets: '3', reps: '10-12', rest: '60s', equipment: 'EZ Bar', icon: '🏋️', note: 'Close grip floor press, elbows tucked, full extension.', muscle: 'Triceps + Chest', tip: 'Triceps are 2/3 of arm size — hit them hard!' },
+      { name: 'DB Overhead Tricep Ext.', sets: '3', reps: '12-15', rest: '45s', equipment: 'Dumbbells', icon: '⬆️', note: 'One DB held overhead with both hands, lower behind head.', muscle: 'Triceps Long Head', tip: 'Long head is the biggest part of triceps. Own it.' },
+      { name: 'Plank', sets: '3', reps: '30-45 sec', rest: '30s', equipment: 'None', icon: '📐', note: 'Straight line head to heels, breathe steadily.', muscle: 'Core (Minimal Abs)', tip: 'Weighted planks if easy: put a plate on your back.' },
+      { name: 'Crunches (Optional)', sets: '2', reps: '20', rest: '30s', equipment: 'None', icon: '🔢', note: 'Controlled, breathe out on the way up.', muscle: 'Abs', tip: 'Abs are built in the kitchen. Keep it minimal, prioritize compound lifts.' },
+    ]
+  },
+  {
+    day: 'SUN', muscle: 'FULL REST', emoji: '🕌', color: 'var(--blue)',
+    type: 'rest',
+    warmup: 'No workout',
+    exercises: [
+      { name: 'Full Rest + Jummah Prep', sets: '-', reps: '-', rest: '-', equipment: 'None', icon: '🤲', note: 'Rest, pray, eat well. This is when your body repairs and grows.', muscle: 'Full Recovery', tip: 'Muscle grows during REST, not during workout. Never skip rest days.' },
+    ]
+  },
+];
+
+const MEALS = [
+  {
+    time: 'FAJR TIME',
+    name: '🌅 Pre-Fajr / Sehri (if applicable)',
+    kcal: 480,
+    items: [
+      { name: 'Oats', amount: '80g', protein: '11g', carbs: '56g', fat: '7g', kcal: 330 },
+      { name: 'Milk (full-fat)', amount: '200ml', protein: '6g', carbs: '10g', fat: '7g', kcal: 124 },
+      { name: 'Banana', amount: '1 medium', protein: '1g', carbs: '23g', fat: '0g', kcal: 89 },
+    ]
+  },
+  {
+    time: 'BREAKFAST',
+    name: '🍳 Breakfast (8–9 AM)',
+    kcal: 620,
+    items: [
+      { name: 'Boiled/Scrambled Eggs', amount: '4 eggs', protein: '24g', carbs: '2g', fat: '20g', kcal: 280 },
+      { name: 'Whole Wheat Roti', amount: '3 rotis', protein: '9g', carbs: '48g', fat: '3g', kcal: 255 },
+      { name: 'Peanuts (handful)', amount: '30g', protein: '8g', carbs: '4g', fat: '14g', kcal: 174 },
+    ]
+  },
+  {
+    time: 'MID-MORNING',
+    name: '🥛 Mid-Morning Snack (11 AM)',
+    kcal: 380,
+    items: [
+      { name: 'Full-Fat Milk', amount: '400ml', protein: '13g', carbs: '20g', fat: '14g', kcal: 250 },
+      { name: 'Banana', amount: '2 medium', protein: '2g', carbs: '46g', fat: '0g', kcal: 178 },
+    ]
+  },
+  {
+    time: 'LUNCH',
+    name: '🍛 Lunch (1–2 PM)',
+    kcal: 720,
+    items: [
+      { name: 'Halal Chicken (grilled)', amount: '150g', protein: '39g', carbs: '0g', fat: '5g', kcal: 198 },
+      { name: 'Rice (cooked)', amount: '200g', protein: '4g', carbs: '46g', fat: '0g', kcal: 200 },
+      { name: 'Dal (Masoor/Chana)', amount: '150g', protein: '10g', carbs: '20g', fat: '1g', kcal: 130 },
+      { name: 'Sabzi + Roti', amount: '2 rotis', protein: '5g', carbs: '30g', fat: '2g', kcal: 160 },
+    ]
+  },
+  {
+    time: 'PRE-WORKOUT',
+    name: '⚡ Pre-Workout (4–5 PM)',
+    kcal: 250,
+    items: [
+      { name: 'Soya Chunks (soaked)', amount: '50g dry', protein: '26g', carbs: '17g', fat: '0.5g', kcal: 175 },
+      { name: 'Banana', amount: '1 medium', protein: '1g', carbs: '23g', fat: '0g', kcal: 89 },
+    ]
+  },
+  {
+    time: 'POST-WORKOUT',
+    name: '🔥 Post-Workout / Dinner (7–8 PM)',
+    kcal: 780,
+    items: [
+      { name: 'Eggs (whole)', amount: '3 eggs', protein: '18g', carbs: '1.5g', fat: '15g', kcal: 210 },
+      { name: 'Soya Chunks (cooked)', amount: '80g dry', protein: '41g', carbs: '28g', fat: '0.8g', kcal: 280 },
+      { name: 'Rice / Roti', amount: '2 rotis + small rice', protein: '8g', carbs: '55g', fat: '2g', kcal: 270 },
+    ]
+  },
+  {
+    time: 'NIGHT',
+    name: '🌙 Before Sleep Snack (10 PM)',
+    kcal: 310,
+    items: [
+      { name: 'Full-Fat Milk', amount: '400ml', protein: '13g', carbs: '20g', fat: '14g', kcal: 250 },
+      { name: 'Peanut Butter (if available)', amount: '15g', protein: '4g', carbs: '3g', fat: '8g', kcal: 96 },
+    ]
+  },
+];
+
+const TIPS = [
+  { icon: '🕌', iconClass: 'gold', title: 'Islamic Fitness Mindset', text: 'The Prophet ﷺ said: "A strong believer is better than a weak one." Exercise is an amanah — a trust. Your body has rights over you. Treat it well.' },
+  { icon: '🥚', iconClass: 'orange', title: 'Eggs Are Your Free Protein', text: '4 eggs = ~24g protein and costs ₹20. They are the most complete natural protein source. Eat them EVERY morning without fail. Halal and cheap.' },
+  { icon: '🫘', iconClass: 'green', title: 'Soya Chunks = Free Creatine', text: 'Soya chunks have 52g protein per 100g dry weight. Cheaper than any supplement. Soak overnight, cook with masala — it\'s your secret weapon for muscle gain.' },
+  { icon: '😴', iconClass: 'blue', title: 'Sleep Is Your Anabolic Window', text: 'Growth Hormone is released during deep sleep. You CANNOT build muscle without 7-8 hours. No supplement replaces sleep. Sleep early after Isha.' },
+  { icon: '💧', iconClass: 'blue', title: 'Drink 3 Litres of Water Daily', text: 'Muscles are 75% water. Dehydration drops strength by 15-20%. Always hydrate between sets. During hot Delhi summers, even more.' },
+  { icon: '📈', iconClass: 'orange', title: 'Progressive Overload = Growth', text: 'Add 1-2 reps or small weight every week. Muscle only grows when you challenge it more than before. Track your lifts — never be complacent.' },
+  { icon: '🍗', iconClass: 'green', title: 'Halal Protein Sources (No Supplements)', text: 'Eggs, halal chicken, fish (halal), milk, soya chunks, dal, peanuts — combined these can easily give you 130g+ protein daily for under ₹100/day.' },
+  { icon: '🏋️', iconClass: 'orange', title: 'Chest Growth Secret', text: 'For chest: mind-muscle connection is EVERYTHING. Squeeze at the top of every press. Go slow on the way down (3 seconds). Your chest will grow fast with this.' },
+  { icon: '⏰', iconClass: 'gold', title: 'Best Workout Time For You', text: 'After Asr prayer (4-5 PM) is ideal — body temperature is highest, coordination peaks, and testosterone is elevated. Perfect timing after your pre-workout meal.' },
+  { icon: '📏', iconClass: 'orange', title: 'Measure Monthly, Not Daily', text: 'Weight fluctuates 1-2kg daily. Measure weight on same day each week, same time (morning, after toilet). Take measurements monthly. Trust the process.' },
+];
+
+// ============================================================
+// STATE
+// ============================================================
+
+let timerInterval = null;
+let timerTotal = 60;
+let timerRemaining = 60;
+let timerRunning = false;
+
+// ============================================================
+// INIT
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', () => {
+  updateHeaderDate();
+  buildWeekGrid();
+  buildDiet();
+  buildTips();
+  buildStreakDots();
+  updateTodayFocus();
+  updateDashStats();
+  renderLogTable();
+  drawChart();
+  
+  // Show today's workout by default
+  const today = new Date().getDay();
+  const idx = today === 0 ? 6 : today - 1;
+  showWorkoutDetail(idx);
+  document.querySelectorAll('.day-card')[idx].classList.add('active');
+});
+
+function updateHeaderDate() {
+  const d = new Date();
+  document.getElementById('headerDate').textContent = d.toLocaleDateString('en-GB', {weekday:'short', day:'numeric', month:'short'});
+}
+
+function updateTodayFocus() {
+  const today = new Date().getDay();
+  const idx = today === 0 ? 6 : today - 1;
+  const day = DAYS[idx];
+  document.getElementById('todayFocus').textContent = day.emoji + ' ' + day.muscle;
+  document.getElementById('todayDesc').textContent = day.type === 'rest'
+    ? 'Rest day — eat well, sleep 8 hours. Recovery is when you grow! 💪'
+    : `${day.exercises.length} exercises · ${day.warmup}`;
+}
+
+function updateDashStats() {
+  const logs = getLogs();
+  if (logs.length > 0) {
+    const latest = logs[logs.length - 1];
+    const w = parseFloat(latest.weight) || 52;
+    document.getElementById('dashWeight').textContent = w;
+    document.getElementById('statWeight').textContent = w;
+    const bmi = (w / (1.70 * 1.70)).toFixed(1);
+    document.getElementById('dashBMI').textContent = bmi;
+    const toGain = Math.max(0, (65 - w).toFixed(1));
+    document.getElementById('statToGain').textContent = toGain;
+  }
+  
+  // Streak
+  const streak = calcStreak(logs);
+  document.getElementById('statStreak').textContent = streak;
+}
+
+function calcStreak(logs) {
+  if (!logs.length) return 0;
+  let streak = 0;
+  const today = new Date(); today.setHours(0,0,0,0);
+  for (let i = logs.length - 1; i >= 0; i--) {
+    const d = new Date(logs[i].date); d.setHours(0,0,0,0);
+    const diff = (today - d) / 86400000;
+    if (diff > streak + 1) break;
+    if (logs[i].workout === 'yes') streak++;
+  }
+  return streak;
+}
+
+function buildStreakDots() {
+  const container = document.getElementById('streakDots');
+  container.innerHTML = '';
+  const logs = getLogs();
+  const today = new Date(); today.setHours(0,0,0,0);
+  
+  for (let i = 29; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    const dateStr = d.toISOString().split('T')[0];
+    const log = logs.find(l => l.date === dateStr);
+    
+    const dot = document.createElement('div');
+    dot.className = 'streak-dot';
+    dot.title = dateStr;
+    
+    if (log) {
+      if (log.workout === 'yes') dot.classList.add('hit');
+      else if (log.workout === 'rest') dot.classList.add('rest-day');
+    }
+    
+    container.appendChild(dot);
+  }
+}
+
+// ============================================================
+// WEEK GRID
+// ============================================================
+
+function buildWeekGrid() {
+  const container = document.getElementById('weekGrid');
+  const today = new Date().getDay();
+  const todayIdx = today === 0 ? 6 : today - 1;
+  
+  DAYS.forEach((day, i) => {
+    const card = document.createElement('div');
+    card.className = 'day-card' + (day.type === 'rest' ? ' rest' : '') + (i === todayIdx ? ' today' : '');
+    card.innerHTML = `<div class="day-name">${day.day}</div><div class="day-muscle">${day.emoji} ${day.muscle}</div>`;
+    card.onclick = () => {
+      document.querySelectorAll('.day-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      showWorkoutDetail(i);
+    };
+    container.appendChild(card);
+  });
+}
+
+function showWorkoutDetail(idx) {
+  const day = DAYS[idx];
+  const container = document.getElementById('workoutDetail');
+  
+  const html = `
+    <div class="workout-detail">
+      <div class="workout-header">
+        <div class="workout-day-badge" style="background:${day.color};color:${day.color === 'var(--gold)' ? '#000' : '#000'}">${day.emoji}</div>
+        <div>
+          <div style="font-family:'Bebas Neue';font-size:26px;letter-spacing:1px;">${day.muscle}</div>
+          <div class="text-sm text-muted">🔥 Warmup: ${day.warmup}</div>
+        </div>
+      </div>
+      <div class="exercise-list">
+        ${day.exercises.map((ex, i) => `
+          <div class="exercise-item" onclick="openModal(${idx}, ${i})">
+            <div class="ex-num">${i+1}</div>
+            <div class="ex-icon">${ex.icon}</div>
+            <div class="ex-info">
+              <div class="ex-name">${ex.name}</div>
+              <div class="ex-detail">${ex.equipment} · Rest ${ex.rest} · <span style="color:var(--text3)">${ex.muscle}</span></div>
+            </div>
+            <div class="ex-sets">
+              <div class="set-pill">${ex.sets}×${ex.reps}</div>
+            </div>
+            <button class="done-toggle" id="toggle-${idx}-${i}" onclick="toggleDone(event, ${idx}, ${i})">
+              ${getDoneState(idx, i) ? '✓' : ''}
+            </button>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  
+  container.innerHTML = html;
+  updateDoneStates(idx);
+}
+
+function getDoneState(dayIdx, exIdx) {
+  const key = `done-${dayIdx}-${exIdx}-${new Date().toISOString().split('T')[0]}`;
+  return localStorage.getItem(key) === '1';
+}
+
+function toggleDone(e, dayIdx, exIdx) {
+  e.stopPropagation();
+  const key = `done-${dayIdx}-${exIdx}-${new Date().toISOString().split('T')[0]}`;
+  const current = localStorage.getItem(key) === '1';
+  localStorage.setItem(key, current ? '0' : '1');
+  const btn = document.getElementById(`toggle-${dayIdx}-${exIdx}`);
+  if (btn) {
+    btn.classList.toggle('checked', !current);
+    btn.textContent = !current ? '✓' : '';
+  }
+  if (!current) showNotif('✅ Exercise Marked Done!');
+}
+
+function updateDoneStates(dayIdx) {
+  DAYS[dayIdx].exercises.forEach((_, i) => {
+    const btn = document.getElementById(`toggle-${dayIdx}-${i}`);
+    if (btn && getDoneState(dayIdx, i)) {
+      btn.classList.add('checked');
+      btn.textContent = '✓';
+    }
+  });
+}
+
+// ============================================================
+// MODAL
+// ============================================================
+
+function openModal(dayIdx, exIdx) {
+  const ex = DAYS[dayIdx].exercises[exIdx];
+  const modal = document.getElementById('modalContent');
+  modal.innerHTML = `
+    <div style="position:relative;">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div style="font-size:40px;margin-bottom:12px;">${ex.icon}</div>
+      <div style="font-family:'Bebas Neue';font-size:28px;letter-spacing:1px;margin-bottom:4px;">${ex.name}</div>
+      <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+        <span class="tag orange">${ex.equipment}</span>
+        <span class="tag">${ex.muscle}</span>
+        <span class="tag">${ex.sets} sets × ${ex.reps}</span>
+        <span class="tag">Rest: ${ex.rest}</span>
+      </div>
+      <div class="sep"></div>
+      <div style="margin-bottom:12px;">
+        <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px;">HOW TO DO IT</div>
+        <div style="font-size:14px;color:var(--text2);line-height:1.7;">${ex.note}</div>
+      </div>
+      <div style="background:rgba(249,115,22,0.06);border:1px solid rgba(249,115,22,0.15);border-radius:10px;padding:12px;">
+        <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin-bottom:4px;">💡 PRO TIP</div>
+        <div style="font-size:13px;color:var(--text);line-height:1.6;">${ex.tip}</div>
+      </div>
+    </div>
+  `;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('modalOverlay')) {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+}
+
+// ============================================================
+// DIET
+// ============================================================
+
+function buildDiet() {
+  const container = document.getElementById('mealsContainer');
+  container.innerHTML = MEALS.map((meal, i) => `
+    <div class="meal-card">
+      <div class="meal-header" onclick="toggleMeal(${i})">
+        <div>
+          <div class="meal-time-badge">${meal.time}</div>
+          <div class="meal-name">${meal.name}</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="meal-kcal">${meal.kcal}</div>
+          <div style="font-size:11px;color:var(--text3);">kcal</div>
+        </div>
+      </div>
+      <div class="meal-body" id="meal-${i}">
+        <div style="margin-top:12px;">
+          ${meal.items.map(item => `
+            <div class="food-row">
+              <span>${item.name} <span style="color:var(--text3)">(${item.amount})</span></span>
+              <div class="food-macros">
+                <span style="color:var(--blue)">P:${item.protein}</span>
+                <span style="color:var(--gold)">C:${item.carbs}</span>
+                <span style="color:var(--green)">F:${item.fat}</span>
+                <span>${item.kcal}kcal</span>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `).join('');
+  
+  // Open first meal
+  document.getElementById('meal-0').classList.add('open');
+}
+
+function toggleMeal(i) {
+  const body = document.getElementById(`meal-${i}`);
+  body.classList.toggle('open');
+}
+
+// ============================================================
+// PROGRESS
+// ============================================================
+
+function getLogs() {
+  return JSON.parse(localStorage.getItem('fitLogs') || '[]');
+}
+
+function saveLogs(logs) {
+  localStorage.setItem('fitLogs', JSON.stringify(logs));
+}
+
+function logProgress() {
+  const weight = document.getElementById('inp-weight').value;
+  const chest = document.getElementById('inp-chest').value;
+  const bicep = document.getElementById('inp-bicep').value;
+  const shoulder = document.getElementById('inp-shoulder').value;
+  const waist = document.getElementById('inp-waist').value;
+  const workout = document.getElementById('inp-workout').value;
+  
+  if (!weight) { showNotif('⚠️ Enter your weight!', 'orange'); return; }
+  
+  const logs = getLogs();
+  const today = new Date().toISOString().split('T')[0];
+  
+  const existing = logs.findIndex(l => l.date === today);
+  const entry = { date: today, weight, chest, bicep, shoulder, waist, workout };
+  
+  if (existing >= 0) logs[existing] = entry;
+  else logs.push(entry);
+  
+  saveLogs(logs);
+  renderLogTable();
+  drawChart();
+  updateDashStats();
+  buildStreakDots();
+  showNotif('✅ Progress Saved!');
+  
+  // Clear inputs
+  ['weight','chest','bicep','shoulder','waist'].forEach(f => document.getElementById('inp-'+f).value = '');
+}
+
+function renderLogTable() {
+  const logs = getLogs();
+  const tbody = document.getElementById('logTableBody');
+  
+  if (!logs.length) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:24px;">No logs yet. Start tracking!</td></tr>';
+    updateProgressStats([]);
+    return;
+  }
+  
+  const sorted = [...logs].reverse();
+  tbody.innerHTML = sorted.map((log, i) => {
+    const prev = sorted[i + 1];
+    const diff = prev && log.weight && prev.weight ? (parseFloat(log.weight) - parseFloat(prev.weight)).toFixed(1) : '-';
+    const diffClass = diff !== '-' ? (parseFloat(diff) >= 0 ? 'pos' : 'neg') : '';
+    const diffStr = diff !== '-' ? (parseFloat(diff) >= 0 ? `+${diff}` : diff) : '-';
+    
+    return `
+      <tr>
+        <td>${log.date}</td>
+        <td><strong>${log.weight || '-'} kg</strong></td>
+        <td>${log.chest || '-'} cm</td>
+        <td>${log.bicep || '-'} cm</td>
+        <td>${log.shoulder || '-'} cm</td>
+        <td>${log.waist || '-'} cm</td>
+        <td class="${diffClass}">${diffStr}</td>
+        <td>${log.workout === 'yes' ? '✅' : log.workout === 'rest' ? '😴' : '❌'}</td>
+      </tr>
+    `;
+  }).join('');
+  
+  updateProgressStats(logs);
+}
+
+function updateProgressStats(logs) {
+  const container = document.getElementById('progressStats');
+  if (!logs.length) {
+    container.innerHTML = '<div style="color:var(--text3);font-size:13px;">Log your first entry to see stats.</div>';
+    return;
+  }
+  
+  const first = logs[0];
+  const last = logs[logs.length - 1];
+  const gained = last.weight && first.weight ? (parseFloat(last.weight) - parseFloat(first.weight)).toFixed(1) : '0';
+  const days = logs.length;
+  
+  container.innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div style="background:var(--bg3);border-radius:10px;padding:12px;">
+        <div class="card-title">Starting Weight</div>
+        <div style="font-family:'Bebas Neue';font-size:28px;color:var(--text)">${first.weight || '-'} kg</div>
+      </div>
+      <div style="background:var(--bg3);border-radius:10px;padding:12px;">
+        <div class="card-title">Current Weight</div>
+        <div style="font-family:'Bebas Neue';font-size:28px;color:var(--accent)">${last.weight || '-'} kg</div>
+      </div>
+      <div style="background:var(--bg3);border-radius:10px;padding:12px;">
+        <div class="card-title">Total Gained</div>
+        <div style="font-family:'Bebas Neue';font-size:28px;color:${parseFloat(gained)>=0?'var(--green)':'var(--red)'}">${gained >= 0 ? '+' : ''}${gained} kg</div>
+      </div>
+      <div style="background:var(--bg3);border-radius:10px;padding:12px;">
+        <div class="card-title">Days Logged</div>
+        <div style="font-family:'Bebas Neue';font-size:28px;color:var(--blue)">${days}</div>
+      </div>
+    </div>
+  `;
+}
+
+function clearLogs() {
+  if (confirm('Clear all progress logs? This cannot be undone.')) {
+    localStorage.removeItem('fitLogs');
+    renderLogTable();
+    drawChart();
+    updateDashStats();
+    buildStreakDots();
+    showNotif('🗑 Logs Cleared');
+  }
+}
+
+// ============================================================
+// CHART
+// ============================================================
+
+function drawChart() {
+  const canvas = document.getElementById('weightChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const logs = getLogs().filter(l => l.weight);
+  
+  canvas.width = canvas.offsetWidth || 600;
+  canvas.height = 160;
+  
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  
+  if (logs.length < 2) {
+    ctx.fillStyle = '#525252';
+    ctx.font = '14px Barlow, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Log at least 2 entries to see your weight chart', W/2, H/2);
+    return;
+  }
+  
+  const weights = logs.map(l => parseFloat(l.weight));
+  const min = Math.min(...weights) - 1;
+  const max = Math.max(...weights) + 1;
+  const pad = { l: 40, r: 20, t: 20, b: 30 };
+  
+  const toX = i => pad.l + (i / (logs.length - 1)) * (W - pad.l - pad.r);
+  const toY = v => pad.t + (1 - (v - min) / (max - min)) * (H - pad.t - pad.b);
+  
+  // Grid lines
+  ctx.strokeStyle = '#222';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = pad.t + (i / 4) * (H - pad.t - pad.b);
+    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(W - pad.r, y); ctx.stroke();
+  }
+  
+  // Gradient fill
+  const grad = ctx.createLinearGradient(0, 0, 0, H);
+  grad.addColorStop(0, 'rgba(249,115,22,0.3)');
+  grad.addColorStop(1, 'rgba(249,115,22,0)');
+  
+  ctx.beginPath();
+  ctx.moveTo(toX(0), H - pad.b);
+  weights.forEach((w, i) => ctx.lineTo(toX(i), toY(w)));
+  ctx.lineTo(toX(weights.length - 1), H - pad.b);
+  ctx.closePath();
+  ctx.fillStyle = grad;
+  ctx.fill();
+  
+  // Line
+  ctx.beginPath();
+  ctx.strokeStyle = '#f97316';
+  ctx.lineWidth = 2.5;
+  ctx.lineJoin = 'round';
+  weights.forEach((w, i) => {
+    if (i === 0) ctx.moveTo(toX(i), toY(w));
+    else ctx.lineTo(toX(i), toY(w));
+  });
+  ctx.stroke();
+  
+  // Dots
+  weights.forEach((w, i) => {
+    ctx.beginPath();
+    ctx.arc(toX(i), toY(w), 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#f97316';
+    ctx.fill();
+    ctx.strokeStyle = '#0a0a0a';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  });
+  
+  // Labels
+  ctx.fillStyle = '#a3a3a3';
+  ctx.font = '11px Barlow, sans-serif';
+  ctx.textAlign = 'center';
+  weights.forEach((w, i) => {
+    if (i === 0 || i === weights.length - 1 || i % Math.ceil(weights.length / 5) === 0) {
+      ctx.fillText(w + 'kg', toX(i), toY(w) - 10);
+    }
+  });
+}
+
+// ============================================================
+// TIMER
+// ============================================================
+
+function setTimer(secs) {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  timerTotal = secs;
+  timerRemaining = secs;
+  document.getElementById('timerDisplay').textContent = secs;
+  document.getElementById('timerBtn').textContent = '▶ Start';
+  updateTimerArc(secs, secs);
+  
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('selected'));
+  event.target.classList.add('selected');
+}
+
+function toggleTimer() {
+  if (timerRunning) {
+    clearInterval(timerInterval);
+    timerRunning = false;
+    document.getElementById('timerBtn').textContent = '▶ Resume';
+  } else {
+    timerRunning = true;
+    document.getElementById('timerBtn').textContent = '⏸ Pause';
+    timerInterval = setInterval(() => {
+      timerRemaining--;
+      document.getElementById('timerDisplay').textContent = timerRemaining;
+      updateTimerArc(timerRemaining, timerTotal);
+      if (timerRemaining <= 0) {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        document.getElementById('timerBtn').textContent = '▶ Start';
+        document.getElementById('timerDisplay').textContent = 'GO!';
+        showNotif('🔔 Rest Complete! Time to lift!');
+        playBeep();
+      }
+    }, 1000);
+  }
+}
+
+function resetTimer() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  timerRemaining = timerTotal;
+  document.getElementById('timerDisplay').textContent = timerTotal;
+  document.getElementById('timerBtn').textContent = '▶ Start';
+  updateTimerArc(timerTotal, timerTotal);
+}
+
+function updateTimerArc(remaining, total) {
+  const arc = document.getElementById('timerArc');
+  const circumference = 596.9;
+  const offset = circumference * (1 - remaining / total);
+  arc.style.strokeDashoffset = offset;
+  
+  // Color transition
+  const ratio = remaining / total;
+  if (ratio > 0.5) arc.style.stroke = '#f97316';
+  else if (ratio > 0.25) arc.style.stroke = '#fbbf24';
+  else arc.style.stroke = '#ef4444';
+}
+
+function playBeep() {
+  try {
+    const ctx = new AudioContext();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.value = 880;
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8);
+    osc.start(); osc.stop(ctx.currentTime + 0.8);
+  } catch(e) {}
+}
+
+// ============================================================
+// TIPS
+// ============================================================
+
+function buildTips() {
+  const container = document.getElementById('tipsContainer');
+  container.innerHTML = TIPS.map(t => `
+    <div class="tip-card">
+      <div class="tip-icon ${t.iconClass}">${t.icon}</div>
+      <div>
+        <div class="tip-title">${t.title}</div>
+        <div class="tip-text">${t.text}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ============================================================
+// NAV
+// ============================================================
+
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  
+  if (id === 'progress') { setTimeout(drawChart, 100); }
+  if (id === 'workout') {
+    setTimeout(() => {
+      const today = new Date().getDay();
+      const idx = today === 0 ? 6 : today - 1;
+      showWorkoutDetail(idx);
+    }, 50);
+  }
+}
+
+// ============================================================
+// NOTIFICATION
+// ============================================================
+
+let notifTimeout;
+function showNotif(msg, color) {
+  const n = document.getElementById('notif');
+  n.textContent = msg;
+  n.style.background = color === 'orange' ? 'var(--accent)' : 'var(--green)';
+  n.classList.add('show');
+  clearTimeout(notifTimeout);
+  notifTimeout = setTimeout(() => n.classList.remove('show'), 2500);
+}
+
+window.addEventListener('resize', drawChart);
+</script>
+</body>
+</html>
