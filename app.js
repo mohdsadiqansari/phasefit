@@ -1,4 +1,220 @@
 // ════════════════════════════════════════════
+// LEADERBOARD CSS (injected once)
+// ════════════════════════════════════════════
+(function injectLbCSS(){
+  const s=document.createElement('style');
+  s.textContent=`
+  .lb-vs{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;margin-bottom:20px;}
+  .lb-user-card{border-radius:20px;padding:20px;border:2px solid var(--border);position:relative;overflow:hidden;transition:transform .3s;}
+  .lb-user-card.winner{transform:scale(1.02);}
+  .lb-user-card.sadik-card{background:linear-gradient(135deg,rgba(249,115,22,.08),rgba(249,115,22,.02));border-color:rgba(249,115,22,.3);}
+  .lb-user-card.anas-card{background:linear-gradient(135deg,rgba(59,130,246,.08),rgba(59,130,246,.02));border-color:rgba(59,130,246,.3);}
+  .lb-crown{position:absolute;top:-2px;right:14px;font-size:28px;filter:drop-shadow(0 0 8px gold);animation:crownBob .8s ease-in-out infinite alternate;}
+  @keyframes crownBob{from{transform:translateY(0)}to{transform:translateY(-4px)}}
+  .lb-av{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:22px;margin-bottom:10px;}
+  .lb-av.s{background:rgba(249,115,22,.2);color:var(--accent);}
+  .lb-av.a{background:rgba(59,130,246,.2);color:var(--blue);}
+  .lb-uname{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;margin-bottom:4px;}
+  .lb-meta{font-size:12px;color:var(--text2);margin-bottom:12px;}
+  .lb-big{font-family:'Bebas Neue',sans-serif;font-size:40px;line-height:1;}
+  .lb-prog-wrap{margin-top:10px;}
+  .lb-prog-label{display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:4px;}
+  .lb-prog-bar{height:8px;background:var(--bg3);border-radius:100px;overflow:hidden;}
+  .lb-prog-fill{height:100%;border-radius:100px;transition:width .8s cubic-bezier(.34,1.56,.64,1);}
+  .vs-badge{text-align:center;}
+  .vs-text{font-family:'Bebas Neue',sans-serif;font-size:40px;letter-spacing:4px;background:linear-gradient(135deg,var(--accent),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .vs-score{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--text2);letter-spacing:2px;margin-top:4px;}
+  .lb-categories{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:4px;}
+  @media(max-width:640px){.lb-vs{grid-template-columns:1fr;}.lb-categories{grid-template-columns:1fr 1fr;}}
+  .lb-cat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;position:relative;overflow:hidden;}
+  .lb-cat-icon{font-size:22px;margin-bottom:6px;}
+  .lb-cat-title{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
+  .lb-cat-vals{display:flex;justify-content:space-between;align-items:flex-end;gap:8px;}
+  .lb-cat-val{text-align:center;flex:1;}
+  .lb-cat-num{font-family:'Bebas Neue',sans-serif;font-size:24px;line-height:1;}
+  .lb-cat-name{font-size:10px;color:var(--text3);margin-top:2px;}
+  .lb-cat-winner{position:absolute;top:8px;right:8px;font-size:13px;}
+  .lb-cat-divider{width:1px;background:var(--border);align-self:stretch;}
+  .lb-row{display:flex;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);gap:12px;}
+  .lb-row:last-child{border-bottom:none;}
+  .lb-row-icon{font-size:18px;width:28px;text-align:center;}
+  .lb-row-label{flex:1;font-size:13px;color:var(--text2);}
+  .lb-row-vals{display:flex;gap:16px;}
+  .lb-row-val{text-align:center;min-width:60px;}
+  .lb-row-num{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;}
+  .lb-row-who{font-size:10px;color:var(--text3);margin-top:1px;letter-spacing:.5px;}
+  .lb-winner-badge{font-size:11px;padding:2px 7px;border-radius:100px;font-weight:700;letter-spacing:.5px;}
+  .lb-winner-badge.s{background:rgba(249,115,22,.15);color:var(--accent);}
+  .lb-winner-badge.a{background:rgba(59,130,246,.15);color:var(--blue);}
+  .lb-winner-badge.tie{background:rgba(251,191,36,.15);color:var(--gold);}
+  .lb-tie-note{text-align:center;padding:20px;color:var(--text3);font-size:13px;}
+  `;
+  document.head.appendChild(s);
+})();
+
+// ════════════════════════════════════════════
+// LEADERBOARD
+// ════════════════════════════════════════════
+function buildLeaderboard(){
+  const sl=JSON.parse(localStorage.getItem('sadik_logs')||'[]');
+  const al=JSON.parse(localStorage.getItem('anas_logs')||'[]');
+  const su=USERS.sadik, au=USERS.anas;
+
+  // ── Helper: latest weight ──
+  const latestW=(logs,u)=>logs.length?parseFloat(logs[logs.length-1].weight)||u.initWeight:u.initWeight;
+  const sw=latestW(sl,su), aw=latestW(al,au);
+
+  // ── Metrics ──
+  const metrics={
+    progress:{
+      label:'Goal Progress',icon:'🎯',unit:'%',
+      s:Math.min(100,Math.max(0,((sw-su.initWeight)/(su.targetWeight-su.initWeight)*100))).toFixed(1),
+      a:Math.min(100,Math.max(0,((aw-au.initWeight)/(au.targetWeight-au.initWeight)*100))).toFixed(1)
+    },
+    streak:{
+      label:'Current Streak',icon:'🔥',unit:'days',
+      s:calcStreak(sl), a:calcStreak(al)
+    },
+    totalDays:{
+      label:'Days Logged',icon:'📅',unit:'days',
+      s:sl.length, a:al.length
+    },
+    workouts:{
+      label:'Workouts Done',icon:'💪',unit:'sessions',
+      s:sl.filter(l=>l.workout==='yes').length,
+      a:al.filter(l=>l.workout==='yes').length
+    },
+    consistency:{
+      label:'Consistency',icon:'📊',unit:'%',
+      s:sl.length?((sl.filter(l=>l.workout==='yes').length/sl.length)*100).toFixed(1):0,
+      a:al.length?((al.filter(l=>l.workout==='yes').length/al.length)*100).toFixed(1):0
+    },
+    weightGained:{
+      label:'Weight Gained',icon:'⚖️',unit:'kg',
+      s:Math.max(0,sw-su.initWeight).toFixed(2),
+      a:Math.max(0,aw-au.initWeight).toFixed(2)
+    }
+  };
+
+  // ── Score (how many categories each wins) ──
+  let sScore=0,aScore=0,ties=0;
+  Object.values(metrics).forEach(m=>{
+    const sv=parseFloat(m.s),av=parseFloat(m.a);
+    if(sv>av)sScore++;
+    else if(av>sv)aScore++;
+    else ties++;
+  });
+
+  const overallWinner=sScore>aScore?'sadik':aScore>sScore?'anas':'tie';
+
+  // ── VS Banner ──
+  const sProgPct=Math.min(100,Math.max(0,((sw-su.initWeight)/(su.targetWeight-su.initWeight)*100)));
+  const aProgPct=Math.min(100,Math.max(0,((aw-au.initWeight)/(au.targetWeight-au.initWeight)*100)));
+
+  document.getElementById('lbVsBanner').innerHTML=`
+    <div class="lb-vs">
+      <div class="lb-user-card sadik-card${overallWinner==='sadik'?' winner':''}">
+        ${overallWinner==='sadik'?'<div class="lb-crown">👑</div>':''}
+        <div class="lb-av s">S</div>
+        <div class="lb-uname">🔥 SADIK</div>
+        <div class="lb-meta">${su.height}cm · ${sw.toFixed(1)}kg · Goal: ${su.targetWeight}kg</div>
+        <div class="lb-big" style="color:var(--accent)">${sProgPct.toFixed(1)}<span style="font-size:18px">%</span></div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px;margin-bottom:8px;">to goal</div>
+        <div class="lb-prog-wrap">
+          <div class="lb-prog-label"><span>Start ${su.initWeight}kg</span><span>Target ${su.targetWeight}kg</span></div>
+          <div class="lb-prog-bar"><div class="lb-prog-fill" style="width:${sProgPct}%;background:var(--accent)"></div></div>
+        </div>
+      </div>
+
+      <div class="vs-badge">
+        <div class="vs-text">VS</div>
+        <div class="vs-score">${sScore} – ${aScore}</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:4px;letter-spacing:1px;">CATEGORIES WON</div>
+        ${ties?`<div style="font-size:10px;color:var(--gold);margin-top:3px;">${ties} TIE${ties>1?'S':''}</div>`:''}
+      </div>
+
+      <div class="lb-user-card anas-card${overallWinner==='anas'?' winner':''}">
+        ${overallWinner==='anas'?'<div class="lb-crown">👑</div>':''}
+        <div class="lb-av a">A</div>
+        <div class="lb-uname" style="color:var(--blue)">⚡ ANAS</div>
+        <div class="lb-meta">${au.height}cm · ${aw.toFixed(1)}kg · Goal: ${au.targetWeight}kg</div>
+        <div class="lb-big" style="color:var(--blue)">${aProgPct.toFixed(1)}<span style="font-size:18px">%</span></div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px;margin-bottom:8px;">to goal</div>
+        <div class="lb-prog-wrap">
+          <div class="lb-prog-label"><span>Start ${au.initWeight}kg</span><span>Target ${au.targetWeight}kg</span></div>
+          <div class="lb-prog-bar"><div class="lb-prog-fill" style="width:${aProgPct}%;background:var(--blue)"></div></div>
+        </div>
+      </div>
+    </div>`;
+
+  // ── Category Cards ──
+  const catList=[
+    metrics.progress, metrics.streak, metrics.workouts,
+    metrics.totalDays, metrics.consistency, metrics.weightGained
+  ];
+  document.getElementById('lbCategories').innerHTML=`<div class="lb-categories">${
+    catList.map(m=>{
+      const sv=parseFloat(m.s),av=parseFloat(m.a);
+      const sw_=sv>av?'s':av>sv?'a':'tie';
+      const winnerEmoji=sw_==='s'?'🔥':sw_==='a'?'⚡':'🤝';
+      return`<div class="lb-cat-card">
+        <div class="lb-cat-icon">${m.icon}</div>
+        <div class="lb-cat-title">${m.label}</div>
+        <div class="lb-cat-vals">
+          <div class="lb-cat-val">
+            <div class="lb-cat-num" style="color:${sv>=av?'var(--accent)':'var(--text2)'}">${m.s}${m.unit==='%'?'%':''}</div>
+            <div class="lb-cat-name">${m.unit!=='%'?m.unit:''} SADIK</div>
+          </div>
+          <div class="lb-cat-divider"></div>
+          <div class="lb-cat-val">
+            <div class="lb-cat-num" style="color:${av>=sv?'var(--blue)':'var(--text2)'}">${m.a}${m.unit==='%'?'%':''}</div>
+            <div class="lb-cat-name">${m.unit!=='%'?m.unit:''} ANAS</div>
+          </div>
+        </div>
+        <div class="lb-cat-winner">${winnerEmoji}</div>
+      </div>`;
+    }).join('')
+  }</div>`;
+
+  // ── Detailed Table ──
+  const rows=[
+    {icon:'⚖️',label:'Current Weight',s:`${sw.toFixed(1)} kg`,a:`${aw.toFixed(1)} kg`,winner:'n/a'},
+    {icon:'🎯',label:'Target Weight',s:`${su.targetWeight} kg`,a:`${au.targetWeight} kg`,winner:'n/a'},
+    {icon:'📈',label:'Weight Gained',s:`${Math.max(0,sw-su.initWeight).toFixed(2)} kg`,a:`${Math.max(0,aw-au.initWeight).toFixed(2)} kg`,winner:parseFloat(sw-su.initWeight)>=parseFloat(aw-au.initWeight)?'s':'a'},
+    {icon:'🏁',label:'To Goal',s:`${Math.max(0,su.targetWeight-sw).toFixed(1)} kg`,a:`${Math.max(0,au.targetWeight-aw).toFixed(1)} kg`,winner:Math.max(0,su.targetWeight-sw)<=Math.max(0,au.targetWeight-aw)?'s':'a'},
+    {icon:'🎯',label:'Goal Progress',s:`${sProgPct.toFixed(1)}%`,a:`${aProgPct.toFixed(1)}%`,winner:sProgPct>=aProgPct?'s':'a'},
+    {icon:'🔥',label:'Streak',s:`${calcStreak(sl)} days`,a:`${calcStreak(al)} days`,winner:calcStreak(sl)>=calcStreak(al)?'s':'a'},
+    {icon:'💪',label:'Workouts Done',s:`${sl.filter(l=>l.workout==='yes').length}`,a:`${al.filter(l=>l.workout==='yes').length}`,winner:sl.filter(l=>l.workout==='yes').length>=al.filter(l=>l.workout==='yes').length?'s':'a'},
+    {icon:'📅',label:'Days Logged',s:`${sl.length}`,a:`${al.length}`,winner:sl.length>=al.length?'s':'a'},
+    {icon:'📊',label:'Consistency',s:`${sl.length?((sl.filter(l=>l.workout==='yes').length/sl.length)*100).toFixed(0):0}%`,a:`${al.length?((al.filter(l=>l.workout==='yes').length/al.length)*100).toFixed(0):0}%`,winner:(sl.length?sl.filter(l=>l.workout==='yes').length/sl.length:0)>=(al.length?al.filter(l=>l.workout==='yes').length/al.length:0)?'s':'a'},
+    {icon:'📆',label:'Last Logged',s:sl.length?sl[sl.length-1].date:'Not yet',a:al.length?al[al.length-1].date:'Not yet',winner:'n/a'}
+  ];
+
+  document.getElementById('lbTable').innerHTML=rows.map(r=>`
+    <div class="lb-row">
+      <div class="lb-row-icon">${r.icon}</div>
+      <div class="lb-row-label">${r.label}</div>
+      <div class="lb-row-vals">
+        <div class="lb-row-val">
+          <div class="lb-row-num" style="color:${r.winner==='s'?'var(--accent)':'var(--text)'}">${r.s}</div>
+          <div class="lb-row-who">SADIK</div>
+        </div>
+        <div class="lb-row-val">
+          <div class="lb-row-num" style="color:${r.winner==='a'?'var(--blue)':'var(--text)'}">${r.a}</div>
+          <div class="lb-row-who">ANAS</div>
+        </div>
+        ${r.winner!=='n/a'?`<div class="lb-row-val"><span class="lb-winner-badge ${r.winner==='s'?'s':r.winner==='a'?'a':'tie'}">${r.winner==='s'?'🔥 SADIK':r.winner==='a'?'⚡ ANAS':'🤝 TIE'}</span></div>`:''}
+      </div>
+    </div>`).join('');
+
+  // Update sub
+  const msg=overallWinner==='sadik'?'🔥 SADIK is leading! Keep it up Anas — don\'t let him get too far ahead!':
+    overallWinner==='anas'?'⚡ ANAS is leading! Come on Sadik — time to push harder!':
+    '🤝 It\'s a TIE! Both brothers are putting in equal work — MashaAllah!';
+  document.getElementById('lbSub').textContent=msg;
+}
+
+// ════════════════════════════════════════════
 // INIT
 // ════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded',()=>{
@@ -577,6 +793,7 @@ function showPage(id,btn){
   document.getElementById('page-'+id).classList.add('active');
   if(btn)btn.classList.add('active');
   if(id==='progress')setTimeout(drawChart,100);
+  if(id==='leaderboard')buildLeaderboard();
   if(id==='workout'){
     setTimeout(()=>{
       const ti=todayIdx();showWorkoutDetail(ti);

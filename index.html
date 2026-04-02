@@ -187,8 +187,10 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   <button class="nav-btn" id="nav-diet" onclick="showPage('diet',this)">🥩 Diet</button>
   <button class="nav-btn" id="nav-progress" onclick="showPage('progress',this)">📈 Progress</button>
   <button class="nav-btn" id="nav-timer" onclick="showPage('timer',this)">⏱ Timer</button>
+  <button class="nav-btn" id="nav-leaderboard" onclick="showPage('leaderboard',this)">🏆 Leaderboard</button>
   <button class="nav-btn" id="nav-tips" onclick="showPage('tips',this)">💡 Tips</button>
 </nav>
+
 
 <!-- DASHBOARD -->
 <div id="page-dashboard" class="page active">
@@ -335,7 +337,29 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   </div>
 </div>
 
-<!-- TIPS -->
+<!-- LEADERBOARD -->
+<div id="page-leaderboard" class="page">
+  <div class="section-title">🏆 LEADERBOARD</div>
+  <div class="section-sub" id="lbSub">Who is closer to their goal? May the best brother win! 💪</div>
+
+  <!-- VS BANNER -->
+  <div id="lbVsBanner"></div>
+
+  <!-- CATEGORY CARDS -->
+  <div id="lbCategories"></div>
+
+  <!-- DETAILED TABLE -->
+  <div class="card" style="margin-top:20px;">
+    <div class="card-title">📋 Full Stats Comparison</div>
+    <div id="lbTable" style="margin-top:12px;"></div>
+  </div>
+
+  <!-- REFRESH NOTE -->
+  <div style="text-align:center;color:var(--text3);font-size:12px;margin-top:16px;">
+    🔄 Updates automatically when you log progress · Both users must have data logged
+  </div>
+</div>
+
 <div id="page-tips" class="page">
   <div class="section-title">PRO TIPS</div>
   <div class="section-sub">Science-backed + Islamic approach to fitness</div>
