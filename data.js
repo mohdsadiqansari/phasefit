@@ -19,73 +19,89 @@ const DAYS=[
   {day:'MON',muscle:'Chest + Triceps',emoji:'🏋️',color:'var(--accent)',type:'push',
    warmup:'5 min jumping jacks + 10 arm circles',exercises:[
     {name:'Barbell Floor Press',sets:'4',reps:'8-10',rest:'90s',equipment:'Barbell',icon:'🏋️',
-     muscles:['Chest','Triceps'],wgerTerm:'bench press',
+     muscles:['Chest','Triceps'],wgerTerm:'floor press barbell',
+
      steps:['Lie flat on floor, grip bar slightly wider than shoulders','Lower bar slowly to chest — 3 full seconds down','Press up explosively, squeeze chest hard at top','Keep elbows at 45°, NOT flared out to 90°','Breathe out on the push, in on the way down'],
      tip:'Floor press limits shoulder strain. Squeeze chest HARD at the top — connections beats weight.'},
     {name:'Dumbbell Chest Flyes',sets:'3',reps:'12-15',rest:'60s',equipment:'Dumbbells',icon:'🦋',
-     muscles:['Chest (stretch)'],wgerTerm:'dumbbell flyes',
+     muscles:['Chest (stretch)'],wgerTerm:'dumbbell fly chest',
+
      steps:['Lie on floor, DBs above chest, palms facing each other','Open arms wide with a slight bend in elbows','Lower until elbows touch the floor for full stretch','Squeeze chest to bring DBs back up in an arc','SLOW on the way down — 3 seconds minimum'],
      tip:'The stretch builds chest width. Control the negative for best results.'},
     {name:'Close-Grip DB Press',sets:'3',reps:'10-12',rest:'60s',equipment:'Dumbbells',icon:'💪',
-     muscles:['Inner Chest','Triceps'],wgerTerm:'close grip bench press',
+     muscles:['Inner Chest','Triceps'],wgerTerm:'close grip press narrow triceps',
+
      steps:['Hold DBs close together, touching on chest','Press upward squeezing DBs inward the whole time','Imagine squeezing an orange between your palms','Extend fully, hold 1 second at top','Lower slowly and under control'],
      tip:'Hits inner chest AND triceps — double benefit in one move.'},
     {name:'EZ Bar Skull Crushers',sets:'3',reps:'10-12',rest:'60s',equipment:'EZ Bar',icon:'💀',
-     muscles:['Triceps Long Head'],wgerTerm:'skull crusher',
+     muscles:['Triceps Long Head'],wgerTerm:'lying triceps extension skull',
+
      steps:['Lie down, hold EZ bar above forehead with both hands','Upper arms stay completely vertical — locked in place','Lower bar toward forehead slowly over 3 seconds','Extend arms back up — only forearms move','Breathe out on the extension'],
      tip:'Upper arms should NOT move. If they do, reduce weight.'},
     {name:'Tricep Kickbacks',sets:'3',reps:'12-15',rest:'45s',equipment:'Dumbbells',icon:'🔁',
-     muscles:['Triceps'],wgerTerm:'triceps kickback',
+     muscles:['Triceps'],wgerTerm:'triceps kickback dumbbell',
+
      steps:['Lean forward 45°, support on table or your knee','Upper arm parallel to floor and LOCKED there','Extend forearm straight back to full lockout','Squeeze hard at full extension for 1 second','Lower slowly over 2 seconds'],
      tip:'Full lockout + 1-second squeeze = maximum burn every rep.'}
   ]},
   {day:'TUE',muscle:'Back + Biceps',emoji:'🔙',color:'var(--blue)',type:'pull',
    warmup:'5 min light rows + 10 shoulder rolls',exercises:[
     {name:'Barbell Bent-Over Row',sets:'4',reps:'8-10',rest:'90s',equipment:'Barbell',icon:'🔃',
-     muscles:['Lats','Mid-Back','Biceps'],wgerTerm:'bent over row',
+     muscles:['Lats','Mid-Back','Biceps'],wgerTerm:'bent over barbell row',
+
      steps:['Hinge at hips to 45°, soft bend in knees','Grip barbell slightly wider than shoulder width','Pull bar to your belly button — squeeze shoulder blades','Hold 1 second at top, then lower controlled','Keep your back flat — no rounding'],
      tip:'Pull with your ELBOWS, not your hands. This is the single best back builder.'},
     {name:'Dumbbell One-Arm Row',sets:'3',reps:'10-12 each',rest:'60s',equipment:'Dumbbells',icon:'💪',
-     muscles:['Lats','Mid-Back'],wgerTerm:'one arm dumbbell row',
+     muscles:['Lats','Mid-Back'],wgerTerm:'one arm row dumbbell single',
+
      steps:['Support hand and knee on bench or table','Let DB hang straight down from shoulder','Pull elbow back and UP past your torso','Squeeze lat hard at the top','Lower slowly to full stretch at bottom'],
      tip:'Drive your elbow BEHIND your body, not just upward.'},
     {name:'EZ Bar Curl',sets:'4',reps:'10-12',rest:'60s',equipment:'EZ Bar',icon:'💪',
-     muscles:['Biceps Peak'],wgerTerm:'barbell curl',
+     muscles:['Biceps Peak'],wgerTerm:'ez bar curl bicep',
+
      steps:['Stand, grip EZ bar on angled inner grips','Elbows pinned firm to your sides — do NOT move them','Curl bar up slowly, squeeze hard at top','Lower over 3 full seconds — this builds too','Full range of motion every single rep'],
      tip:'No swinging. Strict form gives 10x better bicep response.'},
     {name:'Dumbbell Hammer Curl',sets:'3',reps:'12 each',rest:'45s',equipment:'Dumbbells',icon:'🔨',
-     muscles:['Biceps','Brachialis','Forearms'],wgerTerm:'hammer curl',
+     muscles:['Biceps','Brachialis','Forearms'],wgerTerm:'hammer curl neutral grip',
+
      steps:['DBs at sides, neutral grip — thumbs pointing up','Elbows stay pinned to your sides','Curl DB toward shoulder without rotating your wrist','Squeeze at top for 1 full second','Alternate arms or do both together'],
      tip:'Builds arm THICKNESS and killer forearms. Never skip this.'},
     {name:'DB Reverse Curl',sets:'3',reps:'12-15',rest:'45s',equipment:'Dumbbells',icon:'🔄',
-     muscles:['Forearms','Brachioradialis'],wgerTerm:'reverse curl',
+     muscles:['Forearms','Brachioradialis'],wgerTerm:'reverse grip curl forearm',
+
      steps:['Grip DBs with OVERHAND grip — knuckles facing up','Elbows pinned to your sides throughout','Curl upward, keep wrists straight and firm','Lower with control over 3 seconds','Feel the forearm burn — that means it is working'],
      tip:'Slow negatives = massive forearm gains over time.'}
   ]},
   {day:'WED',muscle:'Shoulders + Forearms',emoji:'🪩',color:'var(--gold)',type:'shoulders',
    warmup:'5 min rotator cuff warmup + arm circles each direction',exercises:[
     {name:'Seated DB Overhead Press',sets:'4',reps:'10-12',rest:'90s',equipment:'Dumbbells',icon:'⬆️',
-     muscles:['Front Delts','Side Delts'],wgerTerm:'seated dumbbell shoulder press',
+     muscles:['Front Delts','Side Delts'],wgerTerm:'shoulder press dumbbell seated overhead',
+
      steps:['Sit upright, back straight with support','DBs at ear height, elbows at 70°— not 90° out','Press overhead until arms nearly straight','Lower slowly — do NOT let gravity do the work','Keep core tight throughout the entire set'],
      tip:'70° elbow angle protects your shoulder joint from impingement.'},
     {name:'DB Lateral Raise',sets:'4',reps:'15-20',rest:'45s',equipment:'Dumbbells',icon:'🦅',
-     muscles:['Side Deltoids'],wgerTerm:'lateral raise',
+     muscles:['Side Deltoids'],wgerTerm:'lateral raise side delt',
+
      steps:['Slight forward lean at hips, slight bend in elbows','Raise both arms out to the side simultaneously','Stop exactly at shoulder height — not above','Lead with your PINKIES, not your thumbs','Lower slowly over 3 seconds — feel it'],
      tip:'Use LIGHT weight with perfect form. This builds the wide shoulder look.'},
     {name:'DB Front Raise',sets:'3',reps:'12-15',rest:'45s',equipment:'Dumbbells',icon:'⬆️',
-     muscles:['Front Deltoids'],wgerTerm:'front raise',
+     muscles:['Front Deltoids'],wgerTerm:'front raise dumbbell anterior delt',
+
      steps:['Stand, DBs in front of thighs, palms down','Raise one or both arms forward to eye level','Slight bend in elbows throughout','Do not swing — strict and controlled','Lower slowly feeling front delt working'],
      tip:'Alternate arms for better focus and balance.'},
     {name:'Barbell Upright Row',sets:'3',reps:'10-12',rest:'60s',equipment:'Barbell',icon:'📡',
-     muscles:['Side Delts','Traps'],wgerTerm:'upright row',
+     muscles:['Side Delts','Traps'],wgerTerm:'upright row barbell shoulder',
+
      steps:['Hold barbell with WIDE overhand grip — wider than shoulders','Pull bar straight up close along your body','Elbows drive HIGH and wide — above your wrists','Raise to chin level and no higher','Lower slowly with full control'],
      tip:'Wide grip = safer for your shoulders. Never pull above chin level.'},
     {name:'Wrist Curls + Extensions',sets:'3',reps:'20-25',rest:'30s',equipment:'Dumbbells',icon:'✊',
-     muscles:['Forearm Flexors','Forearm Extensors'],wgerTerm:'wrist curl',
+     muscles:['Forearm Flexors','Forearm Extensors'],wgerTerm:'wrist curl forearm flexion',
+
      steps:['Rest forearm on thigh with wrist over the edge','Curl wrist upward slowly — full range of motion','Then flip hand over for extension, knuckles up','Complete full range in both directions','High reps, slow tempo — squeeze at the top'],
      tip:'Train BOTH flexion and extension for balanced forearm development.'},
     {name:"Farmer's Hold",sets:'3',reps:'45-60 sec',rest:'45s',equipment:'Dumbbells',icon:'🧱',
-     muscles:['Grip Strength','Forearms','Core'],wgerTerm:'farmers walk',
+     muscles:['Grip Strength','Forearms','Core'],wgerTerm:'farmers carry grip strength',
+
      steps:['Pick up heaviest available DBs in both hands','Stand tall — shoulders back and down','Hold at sides completely still','Do not let them swing or sway','Put down ONLY when grip fully fails'],
      tip:'Builds insane forearm size AND grip strength simultaneously.'}
   ]},
@@ -103,42 +119,51 @@ const DAYS=[
   {day:'FRI',muscle:'Legs',emoji:'🦵',color:'var(--red)',type:'legs',
    warmup:'5 min jumping jacks + 10 bodyweight squats',exercises:[
     {name:'Goblet Squat',sets:'4',reps:'10-12',rest:'90s',equipment:'DB or Barbell',icon:'🏋️',
-     muscles:['Quads','Glutes','Hamstrings'],wgerTerm:'squat',
+     muscles:['Quads','Glutes','Hamstrings'],wgerTerm:'goblet squat front',
+
      steps:['Hold DB or barbell at chest level with both hands','Feet shoulder-width apart, toes slightly outward','Squat down until thighs are parallel to the floor','Drive through your HEELS to stand back up','Keep chest up, back flat throughout'],
      tip:'Goblet style is perfect without a rack — safe and effective.'},
     {name:'DB Reverse Lunge',sets:'3',reps:'10 each leg',rest:'60s',equipment:'Dumbbells',icon:'🚶',
-     muscles:['Quads','Glutes'],wgerTerm:'lunge',
+     muscles:['Quads','Glutes'],wgerTerm:'walking lunge dumbbell leg',
+
      steps:['Stand holding DBs at your sides','Step BACK with one foot — not forward','Lower the back knee toward the floor','Front foot stays flat — push through that heel','Return to standing and repeat other leg'],
      tip:'Reverse lunges are easier on knees than forward lunges. Great choice.'},
     {name:'DB Romanian Deadlift',sets:'4',reps:'10-12',rest:'90s',equipment:'Dumbbells',icon:'🔽',
-     muscles:['Hamstrings','Glutes'],wgerTerm:'romanian deadlift',
+     muscles:['Hamstrings','Glutes'],wgerTerm:'romanian deadlift dumbbell hamstring',
+
      steps:['Hold DBs in front of thighs, standing tall','Soft bend in knees — they stay in that position','Push hips BACK and lower DBs down your legs','Feel the hamstring stretch at the bottom','Drive hips forward explosively to return'],
      tip:'GO SLOW on the way down — 3-4 seconds. That is where gains happen.'},
     {name:'DB Calf Raise',sets:'3',reps:'20-25',rest:'30s',equipment:'Dumbbells',icon:'🦵',
-     muscles:['Calves'],wgerTerm:'calf raise',
+     muscles:['Calves'],wgerTerm:'calf raise standing heel',
+
      steps:['Stand on edge of a step or on flat floor','Hold DBs at your sides for added resistance','Rise up on your toes as high as possible','HOLD at the top for 3 full seconds','Lower slowly below the step level if possible'],
      tip:'3-second pause at the top dramatically improves calf development.'}
   ]},
   {day:'SAT',muscle:'Arms + Abs',emoji:'💪',color:'var(--accent)',type:'arms',
    warmup:'5 min light cardio + arm circles both directions',exercises:[
     {name:'Barbell Curl',sets:'4',reps:'8-10',rest:'60s',equipment:'Barbell',icon:'💪',
-     muscles:['Biceps (full)'],wgerTerm:'barbell curl',
+     muscles:['Biceps (full)'],wgerTerm:'barbell curl standing strict',
+
      steps:['Stand, straight bar with shoulder-width underhand grip','Elbows PINNED to your sides — they do not move','Curl the bar up to shoulder height slowly','Squeeze bicep hard at the top for 1 second','Lower over 3 slow seconds — do not drop it'],
      tip:'Elbows to ribs. They should not move an inch. That is the rule.'},
     {name:'DB Concentration Curl',sets:'3',reps:'12 each',rest:'45s',equipment:'Dumbbells',icon:'🎯',
-     muscles:['Biceps Peak'],wgerTerm:'concentration curl',
+     muscles:['Biceps Peak'],wgerTerm:'concentration curl seated preacher',
+
      steps:['Sit on edge of chair or bench','Brace your elbow against the inside of your thigh','Curl DB up slowly with complete focus','Hard squeeze at the top — hold 2 seconds','Lower over 3 full seconds feeling every fiber'],
      tip:'Best exercise for bicep PEAK shape. Slow and focused wins here.'},
     {name:'EZ Bar Close-Grip Press',sets:'3',reps:'10-12',rest:'60s',equipment:'EZ Bar',icon:'🏋️',
-     muscles:['Triceps','Chest'],wgerTerm:'close grip bench press',
+     muscles:['Triceps','Chest'],wgerTerm:'close grip bench narrow triceps press',
+
      steps:['Lie on floor, close grip on EZ bar inner handles','Elbows tucked CLOSE to your body throughout','Press up to full arm extension and lockout','Lower slowly back toward chest over 3 seconds','Feel the triceps doing the work'],
      tip:'Triceps are 2/3 of your arm size. Prioritize them!'},
     {name:'DB Overhead Tricep Extension',sets:'3',reps:'12-15',rest:'45s',equipment:'Dumbbells',icon:'⬆️',
-     muscles:['Triceps Long Head'],wgerTerm:'triceps extension overhead',
+     muscles:['Triceps Long Head'],wgerTerm:'overhead triceps extension dumbbell behind head',
+
      steps:['Hold one DB with both hands directly overhead','Lower the DB behind your head by bending elbows','Elbows stay pointed at the ceiling throughout','Extend arms back up — squeeze triceps hard','Keep core tight to protect your lower spine'],
      tip:'The long head is the BIGGEST part of triceps. This is its best exercise.'},
     {name:'Plank Hold',sets:'3',reps:'30-45 sec',rest:'30s',equipment:'None',icon:'📐',
-     muscles:['Core','Abs','Glutes'],wgerTerm:'plank',
+     muscles:['Core','Abs','Glutes'],wgerTerm:'plank core stability forearm',
+
      steps:['Forearms on floor, elbows directly under shoulders','Toes on ground, form one straight line head to heel','Squeeze ABS, GLUTES, and QUADS simultaneously','Keep hips perfectly level — no sagging or tenting','Breathe steadily and controlled throughout'],
      tip:'Perfect plank = full body tension. Do NOT just survive — actively contract.'}
   ]},
