@@ -443,9 +443,9 @@ function toggleDone(e, di, ei) {
 function today() { return new Date().toISOString().split('T')[0]; }
 
 // ════════════════════════════════════════════
-// EXERCISE MODAL + wger.de VISUAL
+// EXERCISE MODAL — YouTube + Google Links
 // ════════════════════════════════════════════
-async function openModal(di, ei) {
+function openModal(di, ei) {
   const ex = DAYS[di].exercises[ei];
   const overlay = document.getElementById('modalOverlay');
   const modal = document.getElementById('modalContent');
@@ -453,26 +453,57 @@ async function openModal(di, ei) {
   const mTags = ex.muscles.map((m, i) =>
     `<span class="mtag ${i === 0 ? 'primary' : 'secondary'}">${m}</span>`).join('');
 
+  // Build search URLs — 100% free, always works, better than broken static images
+  const q = encodeURIComponent(ex.name + ' exercise correct form tutorial');
+  const ytUrl  = `https://www.youtube.com/results?search_query=${q}`;
+  const ggUrl  = `https://www.google.com/search?q=${encodeURIComponent(ex.name + ' exercise form')}&tbm=isch`;
+  const ggVid  = `https://www.google.com/search?q=${encodeURIComponent(ex.name + ' how to correct form')}&tbm=vid`;
+
+  // Muscle group colour
+  const isRest = ex.muscles[0] === 'Full Recovery' || ex.muscles[0] === 'Recovery';
+  const iconBg = isRest
+    ? 'rgba(34,197,94,.12)'
+    : di === 0 || di === 5 ? 'rgba(249,115,22,.12)'
+    : di === 1 ? 'rgba(59,130,246,.12)'
+    : di === 2 ? 'rgba(251,191,36,.12)'
+    : di === 4 ? 'rgba(239,68,68,.12)'
+    : 'rgba(168,85,247,.12)';
+
   modal.innerHTML = `
     <button class="modal-close" onclick="closeModal()">✕</button>
-    <div style="font-size:36px;margin-bottom:10px;">${ex.icon}</div>
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1px;margin-bottom:8px;">${ex.name}</div>
-    <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;">
+
+    <div style="font-size:42px;margin-bottom:6px;text-align:center;">${ex.icon}</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1px;margin-bottom:8px;text-align:center;">${ex.name}</div>
+
+    <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;justify-content:center;">
       <span class="tag orange">${ex.equipment}</span>
       <span class="tag">${ex.sets} sets × ${ex.reps}</span>
       <span class="tag">Rest: ${ex.rest}</span>
     </div>
-    <div class="muscle-tags">${mTags}</div>
-    <div class="ex-img-wrap" id="exImgWrap">
-      <div class="ex-img-placeholder">
-        <div class="ex-img-spinner"></div>
-        <span style="font-size:12px;">Loading posture guide from wger.de...</span>
+    <div class="muscle-tags" style="justify-content:center;">${mTags}</div>
+
+    <!-- VIDEO + IMAGES LINKS CARD -->
+    <div class="ex-media-card">
+      <div class="ex-media-icon" style="background:${iconBg};font-size:52px;">${ex.icon}</div>
+      <div class="ex-media-label">Watch tutorial videos or browse form images:${isRest ? '<br><span style="opacity:.6;font-size:12px;">Rest day — no tutorial needed</span>' : ''}</div>
+      <div class="ex-media-btns">
+        <a class="ex-media-btn ex-yt" href="${ytUrl}" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.8 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
+          YouTube Tutorial
+        </a>
+        <a class="ex-media-btn ex-gg" href="${ggUrl}" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5l3.5-4.5z"/></svg>
+          Form Images
+        </a>
+        <a class="ex-media-btn ex-ggv" href="${ggVid}" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+          Video Guide
+        </a>
       </div>
     </div>
+
     <div class="sep"></div>
-    <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:8px;">
-      HOW TO DO IT — CORRECT FORM
-    </div>
+    <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:8px;">HOW TO DO IT — CORRECT FORM</div>
     <ol class="step-list">
       ${ex.steps.map((s, i) => `
         <li class="step-item">
@@ -486,41 +517,6 @@ async function openModal(di, ei) {
     </div>`;
 
   overlay.classList.add('open');
-
-  if (ex.wgerTerm) {
-    const imgUrl = await fetchExerciseImage(ex.wgerTerm);
-    const wrap = document.getElementById('exImgWrap');
-    if (wrap) {
-      if (imgUrl) {
-        wrap.innerHTML = `<img src="${imgUrl}" alt="${ex.name}"
-          style="width:100%;height:100%;object-fit:contain;"
-          onerror="this.parentNode.innerHTML='<div class=\\'ex-img-placeholder\\'>🏋️<br><span style=\\'font-size:12px;\\'>Follow the steps below</span></div>'">`;
-      } else {
-        wrap.innerHTML = '<div class="ex-img-placeholder">🏋️<br><span style="font-size:12px;">Follow the steps below for correct form</span></div>';
-      }
-    }
-  } else {
-    const wrap = document.getElementById('exImgWrap');
-    if (wrap) wrap.innerHTML = '<div class="ex-img-placeholder">🧘<br><span style="font-size:12px;">Active Recovery — follow steps</span></div>';
-  }
-}
-
-async function fetchExerciseImage(term) {
-  try {
-    const sr = await fetch(
-      `https://wger.de/api/v2/exercise/search/?term=${encodeURIComponent(term)}&language=english&format=json`,
-      { headers: { 'Authorization': 'Token ' + WGER_TOKEN } });
-    if (!sr.ok) return null;
-    const sd = await sr.json();
-    const baseId = sd.suggestions?.[0]?.data?.base_id;
-    if (!baseId) return null;
-    const ir = await fetch(
-      `https://wger.de/api/v2/exerciseimage/?format=json&exercise_base=${baseId}`,
-      { headers: { 'Authorization': 'Token ' + WGER_TOKEN } });
-    if (!ir.ok) return null;
-    const id = await ir.json();
-    return id.results?.[0]?.image || null;
-  } catch (e) { return null; }
 }
 
 function closeModal(e) {

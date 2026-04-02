@@ -196,6 +196,18 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .ws-overlay:not(.hidden) .ws-footer{animation-delay:.3s;opacity:0;}
 @keyframes wsExit{to{opacity:0;transform:scale(1.04)}}
 .ws-overlay.exiting{animation:wsExit .4s ease forwards;}
+/* ──── EXERCISE MEDIA CARD ──── */
+.ex-media-card{background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:18px;margin:14px 0;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;}
+.ex-media-icon{width:90px;height:90px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ex-media-label{font-size:13px;color:var(--text2);line-height:1.5;}
+.ex-media-btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;}
+.ex-media-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:10px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.5px;text-decoration:none;transition:all .2s;cursor:pointer;border:none;}
+.ex-yt{background:rgba(255,0,0,.12);color:#ff4444;border:1px solid rgba(255,0,0,.25);}
+.ex-yt:hover{background:rgba(255,0,0,.22);transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,0,0,.2);}
+.ex-gg{background:rgba(59,130,246,.1);color:var(--blue);border:1px solid rgba(59,130,246,.25);}
+.ex-gg:hover{background:rgba(59,130,246,.2);transform:translateY(-2px);box-shadow:0 6px 20px rgba(59,130,246,.2);}
+.ex-ggv{background:rgba(168,85,247,.1);color:var(--purple);border:1px solid rgba(168,85,247,.25);}
+.ex-ggv:hover{background:rgba(168,85,247,.2);transform:translateY(-2px);box-shadow:0 6px 20px rgba(168,85,247,.2);}
 </style>
 </head>
 <body>
