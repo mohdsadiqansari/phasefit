@@ -154,11 +154,78 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 .page.active>*{animation:fadeUp .3s ease forwards}
 .page.active>*:nth-child(2){animation-delay:.04s}.page.active>*:nth-child(3){animation-delay:.08s}.page.active>*:nth-child(4){animation-delay:.12s}
-::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
-@media(max-width:600px){.page{padding:14px}.header{padding:0 14px}.nav{padding:7px 14px}.timer-secs{font-size:46px}}
+/* ──── WELCOME SCREEN ──── */
+.ws-overlay{position:fixed;inset:0;z-index:99999;background:#0a0a0a;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;overflow:hidden;}
+.ws-overlay.hidden{pointer-events:none;}
+.ws-bg-glow{position:absolute;width:600px;height:600px;border-radius:50%;filter:blur(120px);opacity:.12;top:50%;left:50%;transform:translate(-50%,-50%);background:conic-gradient(from 0deg,#f97316,#3b82f6,#f97316);animation:wsGlowSpin 8s linear infinite;}
+@keyframes wsGlowSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.ws-logo{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:6px;color:var(--text);margin-bottom:4px;position:relative;}
+.ws-logo span{color:var(--accent);}
+.ws-greeting{font-family:'Barlow Condensed',sans-serif;font-size:14px;letter-spacing:3px;text-transform:uppercase;color:var(--text3);margin-bottom:28px;position:relative;}
+.ws-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,6vw,48px);letter-spacing:3px;text-align:center;margin-bottom:8px;position:relative;}
+.ws-sub{font-size:13px;color:var(--text2);text-align:center;margin-bottom:36px;position:relative;}
+.ws-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:100%;max-width:560px;position:relative;}
+@media(max-width:480px){.ws-cards{grid-template-columns:1fr;max-width:300px;}}
+.ws-card{border-radius:20px;padding:28px 22px;border:2px solid var(--border);cursor:pointer;position:relative;overflow:hidden;transition:transform .25s,border-color .25s,box-shadow .25s;text-align:center;background:var(--card);}
+.ws-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;}
+.ws-card.ws-sadik::before{background:radial-gradient(ellipse at top,rgba(249,115,22,.15),transparent 70%);}
+.ws-card.ws-anas::before{background:radial-gradient(ellipse at top,rgba(59,130,246,.15),transparent 70%);}
+.ws-card:hover{transform:translateY(-6px) scale(1.02);}
+.ws-card.ws-sadik:hover{border-color:rgba(249,115,22,.6);box-shadow:0 16px 48px rgba(249,115,22,.18);}
+.ws-card.ws-anas:hover{border-color:rgba(59,130,246,.6);box-shadow:0 16px 48px rgba(59,130,246,.18);}
+.ws-card:hover::before{opacity:1;}
+.ws-card-av{width:70px;height:70px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;margin:0 auto 14px;}
+.ws-sadik .ws-card-av{background:rgba(249,115,22,.15);color:var(--accent);border:2px solid rgba(249,115,22,.3);}
+.ws-anas .ws-card-av{background:rgba(59,130,246,.15);color:var(--blue);border:2px solid rgba(59,130,246,.3);}
+.ws-card-name{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;margin-bottom:4px;}
+.ws-sadik .ws-card-name{color:var(--accent);}
+.ws-anas .ws-card-name{color:var(--blue);}
+.ws-card-stats{font-size:12px;color:var(--text2);line-height:1.8;margin-bottom:16px;}
+.ws-card-btn{display:inline-block;padding:8px 22px;border-radius:100px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;pointer-events:none;}
+.ws-sadik .ws-card-btn{background:rgba(249,115,22,.15);color:var(--accent);border:1px solid rgba(249,115,22,.3);}
+.ws-anas .ws-card-btn{background:rgba(59,130,246,.15);color:var(--blue);border:1px solid rgba(59,130,246,.3);}
+.ws-footer{position:relative;margin-top:24px;font-size:11px;color:var(--text3);letter-spacing:1px;text-align:center;}
+.ws-card-emoji{font-size:30px;margin-bottom:8px;}
+/* Animate in */
+@keyframes wsCardIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.ws-overlay:not(.hidden) .ws-logo,.ws-overlay:not(.hidden) .ws-greeting,.ws-overlay:not(.hidden) .ws-heading,.ws-overlay:not(.hidden) .ws-sub,.ws-overlay:not(.hidden) .ws-cards,.ws-overlay:not(.hidden) .ws-footer{animation:wsCardIn .5s ease forwards;}
+.ws-overlay:not(.hidden) .ws-greeting{animation-delay:.05s;opacity:0;}
+.ws-overlay:not(.hidden) .ws-heading{animation-delay:.1s;opacity:0;}
+.ws-overlay:not(.hidden) .ws-sub{animation-delay:.15s;opacity:0;}
+.ws-overlay:not(.hidden) .ws-cards{animation-delay:.2s;opacity:0;}
+.ws-overlay:not(.hidden) .ws-footer{animation-delay:.3s;opacity:0;}
+@keyframes wsExit{to{opacity:0;transform:scale(1.04)}}
+.ws-overlay.exiting{animation:wsExit .4s ease forwards;}
 </style>
 </head>
 <body>
+
+<!-- WELCOME / USER SELECTION -->
+<div class="ws-overlay" id="wsOverlay">
+  <div class="ws-bg-glow"></div>
+  <div class="ws-logo">PHASE<span>FIT</span></div>
+  <div class="ws-greeting">🌙 Assalamu Alaikum</div>
+  <div class="ws-heading">WHO ARE YOU?</div>
+  <div class="ws-sub">Select your profile to continue to your personal dashboard</div>
+  <div class="ws-cards">
+    <div class="ws-card ws-sadik" onclick="selectUser('sadik')">
+      <div class="ws-card-emoji">🔥</div>
+      <div class="ws-card-av">S</div>
+      <div class="ws-card-name">SADIK</div>
+      <div class="ws-card-stats">173 cm · 56.65 kg start<br>Goal: 65 kg lean muscle<br>2700 kcal / day</div>
+      <div class="ws-card-btn">Enter →</div>
+    </div>
+    <div class="ws-card ws-anas" onclick="selectUser('anas')">
+      <div class="ws-card-emoji">⚡</div>
+      <div class="ws-card-av">A</div>
+      <div class="ws-card-name">ANAS</div>
+      <div class="ws-card-stats">175 cm · 52 kg start<br>Goal: 70 kg lean muscle<br>2300 kcal / day</div>
+      <div class="ws-card-btn">Enter →</div>
+    </div>
+  </div>
+  <div class="ws-footer">🕌 Halal · Budget-Friendly · Home Workout · Evening Split</div>
+</div>
+
 
 <!-- HEADER -->
 <header class="header">
