@@ -117,7 +117,7 @@ function buildLeaderboard() {
         ${overallWinner === 'sadik' ? '<div class="lb-crown">👑</div>' : ''}
         <div class="lb-av s">S</div>
         <div class="lb-uname">🔥 SADIK</div>
-        <div class="lb-meta">${su.height}cm · ${sw.toFixed(1)}kg · Goal: ${su.targetWeight}kg</div>
+        <div class="lb-meta">${su.age}y · ${su.height}cm · ${sw.toFixed(1)}kg · Goal: ${su.targetWeight}kg</div>
         <div class="lb-big" style="color:var(--accent)">${sProgPct.toFixed(1)}<span style="font-size:18px">%</span></div>
         <div style="font-size:11px;color:var(--text3);margin-top:2px;margin-bottom:8px;">to goal</div>
         <div class="lb-prog-wrap">
@@ -137,7 +137,7 @@ function buildLeaderboard() {
         ${overallWinner === 'anas' ? '<div class="lb-crown">👑</div>' : ''}
         <div class="lb-av a">A</div>
         <div class="lb-uname" style="color:var(--blue)">⚡ ANAS</div>
-        <div class="lb-meta">${au.height}cm · ${aw.toFixed(1)}kg · Goal: ${au.targetWeight}kg</div>
+        <div class="lb-meta">${au.age}y · ${au.height}cm · ${aw.toFixed(1)}kg · Goal: ${au.targetWeight}kg</div>
         <div class="lb-big" style="color:var(--blue)">${aProgPct.toFixed(1)}<span style="font-size:18px">%</span></div>
         <div style="font-size:11px;color:var(--text3);margin-top:2px;margin-bottom:8px;">to goal</div>
         <div class="lb-prog-wrap">
@@ -316,7 +316,7 @@ function buildDashboard() {
 
   document.getElementById('dashName').textContent = u.emoji + ' ' + u.name;
   document.getElementById('dashMeta').textContent =
-    u.height + 'cm · ' + w.toFixed(1) + 'kg · BMI ' + bmi + ' · Goal: ' + u.targetWeight + 'kg Lean Muscle';
+    'Age ' + u.age + ' · ' + u.height + 'cm · ' + w.toFixed(1) + 'kg · BMI ' + bmi + ' · Goal: ' + u.targetWeight + 'kg Lean Muscle';
 
   const day = DAYS[todayIdx()];
   document.getElementById('dashTodayFocus').textContent = day.emoji + ' ' + day.muscle;

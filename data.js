@@ -3,10 +3,15 @@ const WGER_TOKEN='a4d2f79b0b88a0175d5652a5965fdf145e3bf207';
 const JBKEY='$2a$10$OGQ4ctNutWXPvH9k0.KQcOFZypBGmPJyDy7AfrwXX0IEZE/fmc946';
 const JBURL='https://api.jsonbin.io/v3/b';
 
-// ═══ USER PROFILES ═══
+// ═══ USER PROFILES (Targets calculated via Mifflin-St Jeor BMR + TDEE + Bulking Surplus) ═══
 const USERS={
-  sadik:{name:'SADIK',emoji:'🔥',height:173,initWeight:56.65,targetWeight:65,calories:2700,protein:135,carbs:338,fat:75},
-  anas:{name:'ANAS',emoji:'⚡',height:175,initWeight:52,targetWeight:70,calories:2300,protein:110,carbs:290,fat:65}
+  sadik:{name:'SADIK',emoji:'🔥',age:20,height:173,initWeight:56.65,targetWeight:65,
+    // BMR=1543→TDEE=2391→Bulk+300=2700 | Protein: 2.1g/kg target | BMI goal: 21.7
+    calories:2700,protein:135,carbs:338,fat:75},
+  anas:{name:'ANAS',emoji:'⚡',age:18,height:175,initWeight:52,targetWeight:70,
+    // BMR=1519→TDEE=2354→Bulk+450=2800 | Protein: 1.7g/kg target | BMI goal: 22.9
+    // At 18, higher surplus needed: still growing + very underweight (BMI 16.98)
+    calories:2800,protein:120,carbs:400,fat:80}
 };
 
 // ═══ STATE ═══
@@ -206,34 +211,38 @@ const SADIK_MEALS=[
     {name:'Peanut Butter',amount:'15g',protein:'4g',carbs:'3g',fat:'8g',kcal:96}]}
 ];
 
-// ═══ ANAS MEALS (2300 kcal) ═══
+// ═══ ANAS MEALS (2800 kcal) — Age 18, 175cm, 52kg, BMI 16.98 → Target 70kg ═══
+// Mifflin-St Jeor BMR=1519, TDEE≈2354, Surplus+450=2800 kcal
+// Extra carbs & fats: at 18 he is still growing — needs energy above and beyond muscle building
 const ANAS_MEALS=[
-  {time:'FAJR TIME',name:'🌅 Pre-Fajr / Sehri',kcal:363,items:[
-    {name:'Oats',amount:'50g',protein:'7g',carbs:'34g',fat:'5g',kcal:212},
-    {name:'Milk (full-fat)',amount:'100ml',protein:'3g',carbs:'5g',fat:'3g',kcal:62},
-    {name:'Banana',amount:'1 medium',protein:'1g',carbs:'23g',fat:'0g',kcal:89}]},
-  {time:'BREAKFAST',name:'🍳 Breakfast (8–9 AM)',kcal:455,items:[
-    {name:'Boiled / Scrambled Eggs',amount:'3 eggs',protein:'18g',carbs:'1.5g',fat:'15g',kcal:210},
-    {name:'Whole Wheat Roti',amount:'2 rotis',protein:'6g',carbs:'32g',fat:'2g',kcal:170},
-    {name:'Peanuts',amount:'15g',protein:'4g',carbs:'2g',fat:'7g',kcal:86}]},
-  {time:'MID-MORNING',name:'🥛 Mid-Morning Snack (11 AM)',kcal:213,items:[
+  {time:'FAJR TIME',name:'🌅 Pre-Fajr / Sehri',kcal:520,items:[
+    {name:'Oats',amount:'80g',protein:'11g',carbs:'54g',fat:'7g',kcal:330},
     {name:'Full-Fat Milk',amount:'200ml',protein:'6g',carbs:'10g',fat:'7g',kcal:124},
+    {name:'Banana',amount:'1 large',protein:'1g',carbs:'27g',fat:'0g',kcal:105},
+    {name:'Peanut Butter',amount:'10g',protein:'3g',carbs:'1g',fat:'5g',kcal:60}]},
+  {time:'BREAKFAST',name:'🍳 Breakfast (8–9 AM)',kcal:560,items:[
+    {name:'Boiled / Scrambled Eggs',amount:'4 eggs',protein:'24g',carbs:'2g',fat:'20g',kcal:280},
+    {name:'Whole Wheat Roti',amount:'3 rotis',protein:'9g',carbs:'48g',fat:'3g',kcal:255},
+    {name:'Peanuts',amount:'10g',protein:'3g',carbs:'1g',fat:'5g',kcal:58}]},
+  {time:'MID-MORNING',name:'🥛 Mid-Morning Snack (11 AM)',kcal:300,items:[
+    {name:'Full-Fat Milk',amount:'300ml',protein:'10g',carbs:'15g',fat:'10g',kcal:186},
+    {name:'Banana',amount:'1 medium',protein:'1g',carbs:'23g',fat:'0g',kcal:89},
+    {name:'Dates (Khajoor)',amount:'3 pieces',protein:'0g',carbs:'18g',fat:'0g',kcal:72}]},
+  {time:'LUNCH',name:'🍛 Lunch (1–2 PM)',kcal:680,items:[
+    {name:'Halal Chicken (grilled)',amount:'150g',protein:'39g',carbs:'0g',fat:'5g',kcal:198},
+    {name:'Rice (cooked)',amount:'200g',protein:'4g',carbs:'46g',fat:'0g',kcal:200},
+    {name:'Dal (Masoor / Chana)',amount:'120g',protein:'9g',carbs:'19g',fat:'1g',kcal:124},
+    {name:'Sabzi + 2 Rotis',amount:'2 rotis + sabzi',protein:'5g',carbs:'33g',fat:'2g',kcal:170}]},
+  {time:'PRE-WORKOUT',name:'⚡ Pre-Workout (4–5 PM)',kcal:270,items:[
+    {name:'Soya Chunks (soaked)',amount:'50g dry',protein:'26g',carbs:'17g',fat:'0.5g',kcal:175},
     {name:'Banana',amount:'1 medium',protein:'1g',carbs:'23g',fat:'0g',kcal:89}]},
-  {time:'LUNCH',name:'🍛 Lunch (1–2 PM)',kcal:490,items:[
-    {name:'Halal Chicken (grilled)',amount:'100g',protein:'26g',carbs:'0g',fat:'3g',kcal:131},
-    {name:'Rice (cooked)',amount:'150g',protein:'3g',carbs:'35g',fat:'0g',kcal:150},
-    {name:'Dal (Masoor / Chana)',amount:'100g',protein:'8g',carbs:'16g',fat:'1g',kcal:104},
-    {name:'Sabzi + 1 Roti',amount:'1 roti + sabzi',protein:'4g',carbs:'20g',fat:'1g',kcal:105}]},
-  {time:'PRE-WORKOUT',name:'⚡ Pre-Workout (4–5 PM)',kcal:214,items:[
-    {name:'Soya Chunks (soaked)',amount:'35g dry',protein:'18g',carbs:'12g',fat:'0.5g',kcal:125},
-    {name:'Banana',amount:'1 medium',protein:'1g',carbs:'23g',fat:'0g',kcal:89}]},
-  {time:'POST-WORKOUT',name:'🔥 Post-Workout / Dinner (7–8 PM)',kcal:497,items:[
-    {name:'Eggs (whole)',amount:'2 eggs',protein:'12g',carbs:'1g',fat:'10g',kcal:140},
-    {name:'Soya Chunks (cooked)',amount:'50g dry',protein:'26g',carbs:'17g',fat:'0.5g',kcal:175},
-    {name:'Rice + Roti',amount:'1.5 rotis + small rice',protein:'5g',carbs:'36g',fat:'1.5g',kcal:182}]},
-  {time:'NIGHT',name:'🌙 Before Sleep (10 PM)',kcal:170,items:[
-    {name:'Full-Fat Milk',amount:'250ml',protein:'8g',carbs:'13g',fat:'9g',kcal:155},
-    {name:'Khajoor (Dates)',amount:'2 pieces',protein:'0g',carbs:'18g',fat:'0g',kcal:67}]}
+  {time:'POST-WORKOUT',name:'🔥 Post-Workout / Dinner (7–8 PM)',kcal:680,items:[
+    {name:'Eggs (whole)',amount:'3 eggs',protein:'18g',carbs:'1.5g',fat:'15g',kcal:210},
+    {name:'Soya Chunks (cooked)',amount:'60g dry',protein:'31g',carbs:'20g',fat:'0.6g',kcal:210},
+    {name:'Rice + Roti',amount:'2 rotis + medium rice',protein:'9g',carbs:'65g',fat:'3g',kcal:324}]},
+  {time:'NIGHT',name:'🌙 Before Sleep (10 PM)',kcal:300,items:[
+    {name:'Full-Fat Milk',amount:'400ml',protein:'13g',carbs:'20g',fat:'14g',kcal:250},
+    {name:'Peanut Butter',amount:'15g',protein:'4g',carbs:'3g',fat:'8g',kcal:96}]}
 ];
 
 // ═══ TIPS ═══
@@ -247,5 +256,8 @@ const TIPS=[
   {icon:'🍗',cls:'green',title:'Halal Protein Sources (No Supplements)',text:'Eggs, halal chicken, milk, soya chunks, dal, peanuts — combined, these give 130g+ protein daily for under ₹100/day. SubhanAllah.'},
   {icon:'🏋️',cls:'orange',title:'Chest Growth Secret',text:'Mind-muscle connection is EVERYTHING. Squeeze at the top of every press. Go slow on the way down — 3 full seconds. Your chest will respond.'},
   {icon:'⏰',cls:'gold',title:'Best Workout Time for You Both',text:'After Asr prayer (4-5 PM) is perfect — body temperature is highest, coordination peaks, and testosterone is elevated. Evening workouts win.'},
-  {icon:'📏',cls:'orange',title:'Measure Monthly, Not Daily',text:'Weight fluctuates 1-2kg daily (water, food). Measure on the same day each week, same time (morning, after toilet). Trust the long process.'}
+  {icon:'📏',cls:'orange',title:'Measure Monthly, Not Daily',text:'Weight fluctuates 1-2kg daily (water, food). Measure on the same day each week, same time (morning, after toilet). Trust the long process.'},
+  {icon:'🧬',cls:'blue',title:'At 18–20: Your Golden Anabolic Window',text:'Testosterone peaks between 18–25 years old. This is the BEST time in your life to build muscle. Consistency now = a physique for life. Do NOT waste this window — train hard, eat big, sleep 8 hours. MashaAllah — the body Allah gave you at this age is a gift.'},
+  {icon:'📐',cls:'green',title:'Anas: BMI Alert — You Are Underweight',text:'Anas is at BMI 16.98 — clinically underweight. Your primary goal is to EAT MORE, not just train harder. 2800 kcal every single day is non-negotiable. Miss a meal = miss muscle. Treat eating as part of your training.'},
+  {icon:'🦴',cls:'gold',title:'Teen Bones Still Growing',text:'At 18, your bones are still strengthening. Focus on compound lifts (rows, presses, squats) to stimulate bone density alongside muscle. Avoid partial reps — full range equals full development.'}
 ];
