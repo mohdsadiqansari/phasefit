@@ -497,8 +497,13 @@ function openModal(di, ei) {
         </a>
         <a class="ex-media-btn ex-ggv" href="${ggVid}" target="_blank" rel="noopener">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/></svg>
-          Video Guide
+          Google Videos
         </a>
+        ${ex.mwLink ? `
+        <a class="ex-media-btn ex-mw" href="${ex.mwLink}" target="_blank" rel="noopener" style="width:100%;margin-top:4px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/></svg>
+          Official MuscleWiki Guide
+        </a>` : ''}
       </div>
     </div>
 
